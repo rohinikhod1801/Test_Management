@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.Category;
 import com.bnt.model.Questions;
 import com.bnt.model.QuestionsResponse;
@@ -70,12 +71,11 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public void deleteQuestion(Long questionId) {
-		try {
-			this.repository.deleteById(questionId);
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to delete category", e);
-		}
-	}
+		 if (!questionRepository.existsById(questionId)) {
+	            throw new QuestionNotFoundException("Question not found with id: " + questionId);
+	        }
+	        questionRepository.deleteById(questionId);
+	    }
 
 	private QuestionsResponse convertToCategoryResponse(Questions questions) {
 		QuestionsResponse response = new QuestionsResponse();

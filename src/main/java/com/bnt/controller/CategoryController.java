@@ -14,60 +14,57 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bnt.exception.CategoryException;
+import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.model.Category;
 import com.bnt.model.CategoryResponse;
 import com.bnt.service.CategoryService;
 
-
 @RestController
 public class CategoryController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
-	
+
 	@Autowired
 	private CategoryService service;
-	
+
 	@PostMapping("/insert")
 	public Category addNewCategory(@RequestBody Category category) {
 
-		Category addcategory=service.addNewCategory(category);
+		Category addcategory = service.addNewCategory(category);
 		logger.info("Added a new category: {}", category);
 		return addcategory;
 
 	}
-	
+
 	@GetMapping
 	public List<CategoryResponse> getAllCategory() {
-		
-		List<CategoryResponse> showCategories=service.getAllCatogory();
-		logger.info("Getting all categories: {}",showCategories.toString());
+
+		List<CategoryResponse> showCategories = service.getAllCatogory();
+		logger.info("Getting all categories: {}", showCategories.toString());
 		return showCategories;
 	}
-	
-
 
 	@GetMapping("/{category_id}")
 	public ResponseEntity<?> getCategoryById(@PathVariable("category_id") Long categoryId) {
 		try {
-			CategoryResponse category=service.getCategoryById(categoryId);
+			CategoryResponse category = service.getCategoryById(categoryId);
 			logger.info("Getting category by ID: {}", category);
 			return ResponseEntity.ok(category);
-		} catch (CategoryException ex) {
+		} catch (CategoryNotFoundException ex) {
 			logger.error("Category not found with ID: {}", categoryId, ex);
-			return ResponseEntity.status(404).body(ex.getMessage());
+			throw new CategoryNotFoundException("Error occurred while getById category" + ex);
 		}
 	}
 
 	@PutMapping
 	public ResponseEntity<CategoryResponse> updateCategory(@RequestBody Category category) {
-	    try {
-	        CategoryResponse updatedCategory = service.updateCategory(category);
-	        return ResponseEntity.ok(updatedCategory);
-	    } catch (Exception e) {
-	        logger.error("Error occurred while updating category", e);
-	        throw new RuntimeException("Error occurred while updating category", e);
-	    }
+		try {
+			CategoryResponse updatedCategory = service.updateCategory(category);
+			return ResponseEntity.ok(updatedCategory);
+		} catch (Exception e) {
+			logger.error("Error occurred while updating category", e);
+			throw new CategoryNotFoundException("Error occurred while updating category" + e);
+		}
 	}
 
 	@DeleteMapping("/{category_id}")
@@ -76,12 +73,11 @@ public class CategoryController {
 			logger.info("Deleting category with ID: {}", categoryId);
 			this.service.deleteCategory(categoryId);
 			return ResponseEntity.ok().build();
-		} catch (CategoryException ex) {
+		} catch (CategoryNotFoundException ex) {
 			logger.error("Category not found with ID: {}", categoryId, ex);
-			return ResponseEntity.status(404).body(ex.getMessage());
+			throw new CategoryNotFoundException("Error occurred while Deleting category" + ex);
 		}
 
 	}
-	
-	
+
 }

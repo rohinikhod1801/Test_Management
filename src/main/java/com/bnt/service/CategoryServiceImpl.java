@@ -6,11 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.model.Category;
 import com.bnt.model.CategoryResponse;
 import com.bnt.repository.CategoryRepository;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -40,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	public CategoryResponse getCategoryById(Long categoryId) {
 	    Category category = repository.findById(categoryId)
-	            .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+	            .orElseThrow(() -> new CategoryNotFoundException("Category not found"+ categoryId));
 	    return convertToCategoryResponse(category);
 	}
 
@@ -49,32 +48,36 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryResponse updateCategory(Category category) {
 	    try {
 	        Category existingCategory = this.repository.findById(category.getCategory_id())
-	                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+	                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
 	        existingCategory.setTitle(category.getTitle());
 	        existingCategory.setDescription(category.getDescription());
 
 	        Category updatedCategory = this.repository.save(existingCategory);
 	        return convertToCategoryResponse(updatedCategory);
-	    } catch (Exception e) {
-	        throw new RuntimeException("Failed to update category", e);
+	    } catch (CategoryNotFoundException e) {
+	        throw new CategoryNotFoundException("Failed to update category" + category.getCategory_id() + " not found");
 	    }
 	}
-
-
 	@Override
 	public void deleteCategory(Long categoryId) {
-	    try {
-	        this.repository.deleteById(categoryId);
-	    } catch (Exception e) {
-	        throw new RuntimeException("Failed to delete category", e);
+	    if (repository.existsById(categoryId)) {
+	        try {
+	        	repository.deleteById(categoryId);
+	        } catch (CategoryNotFoundException e) {
+	            throw new CategoryNotFoundException("Failed to delete category");
+	        }
+	    } else {
+	        throw new CategoryNotFoundException("Category with ID " + categoryId + " not found");
 	    }
 	}
-	
+
+
 	private CategoryResponse convertToCategoryResponse(Category category) {
 	    CategoryResponse updateCategory = new CategoryResponse();
 	    updateCategory.setCategoryId(category.getCategory_id());
 	    updateCategory.setCategoryName(category.getTitle()); 
+	    updateCategory.setDecription(category.getDescription());
 	    return updateCategory;
 	}
 

@@ -75,7 +75,7 @@ public class Category {
 	}
 
 	public CategoryResponse toDTO() {
-        return new CategoryResponse(category_id, description);
+        return new CategoryResponse(category_id,title,description);
     }
 	
 	@Override
