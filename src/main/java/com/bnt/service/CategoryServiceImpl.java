@@ -47,9 +47,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryResponse updateCategory(Category category) {
-		try {
+	    try {
 	        Category existingCategory = this.repository.findById(category.getCategory_id())
-	                .orElseThrow(() -> new EntityNotFoundException("Category not found"));	      
+	                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+	        existingCategory.setTitle(category.getTitle());
+	        existingCategory.setDescription(category.getDescription());
+
 	        Category updatedCategory = this.repository.save(existingCategory);
 	        return convertToCategoryResponse(updatedCategory);
 	    } catch (Exception e) {
@@ -68,10 +72,10 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	private CategoryResponse convertToCategoryResponse(Category category) {
-		CategoryResponse categoryDTO = new CategoryResponse();
-	    categoryDTO.setCategoryId(category.getCategory_id());
-	    categoryDTO.setCategoryName(category.getDescription());
-	    return categoryDTO;
+	    CategoryResponse updateCategory = new CategoryResponse();
+	    updateCategory.setCategoryId(category.getCategory_id());
+	    updateCategory.setCategoryName(category.getTitle()); 
+	    return updateCategory;
 	}
 
 }

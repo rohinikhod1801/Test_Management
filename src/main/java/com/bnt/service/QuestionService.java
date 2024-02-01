@@ -13,7 +13,7 @@ public interface QuestionService {
 	
 	public QuestionsResponse getQuestionsById(Long questionId);
 
-	public QuestionsResponse updateQuestion(Long questionId,Questions questions);
+	public QuestionsResponse updateQuestion(Questions questions);
 
 	public void deleteQuestion(Long questionId);
 

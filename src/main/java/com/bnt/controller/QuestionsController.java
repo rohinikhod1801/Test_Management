@@ -56,12 +56,11 @@ public class QuestionsController {
         return service.getQuestionsById(questionId);
     }
 	
-	 @PutMapping("/{questionId}")
+	 @PutMapping
 	 public ResponseEntity<QuestionsResponse> updateQuestion(
-	            @PathVariable("questionId") Long questionId,
 	            @RequestBody Questions updatedQuestionRequest) {
 	        try {
-	        	QuestionsResponse updatedQuestion = service.updateQuestion(questionId, updatedQuestionRequest);
+	        	QuestionsResponse updatedQuestion = service.updateQuestion(updatedQuestionRequest);
 	            return ResponseEntity.ok(updatedQuestion);
 	        } catch (EntityNotFoundException e) {	      
 	            return ResponseEntity.notFound().build();

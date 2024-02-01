@@ -61,15 +61,13 @@ public class CategoryController {
 
 	@PutMapping
 	public ResponseEntity<CategoryResponse> updateCategory(@RequestBody Category category) {
-		try {
-			
-			CategoryResponse updatedCategory = service.updateCategory(category);
-			
-			return ResponseEntity.ok(updatedCategory);
-		} catch (Exception e) {
-			logger.error("Error occurred while updating category", e);
-			throw new RuntimeException("Error occurred while updating category", e);
-		}
+	    try {
+	        CategoryResponse updatedCategory = service.updateCategory(category);
+	        return ResponseEntity.ok(updatedCategory);
+	    } catch (Exception e) {
+	        logger.error("Error occurred while updating category", e);
+	        throw new RuntimeException("Error occurred while updating category", e);
+	    }
 	}
 
 	@DeleteMapping("/{category_id}")
