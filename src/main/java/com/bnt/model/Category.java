@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -29,17 +30,26 @@ public class Category {
 	@JsonIgnore
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Questions> questions;
+	
+	@JsonIgnore
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
+    private List<Test> tests;
 
 	public Category() {
 		super();
 	}
 
-	public Category(Long category_id, String title, String description, List<Questions> questions) {
+	public CategoryResponse toDTO() {
+        return new CategoryResponse(category_id,title,description);
+    }
+
+	public Category(Long category_id, String title, String description, List<Questions> questions, List<Test> tests) {
 		super();
 		this.category_id = category_id;
 		this.title = title;
 		this.description = description;
 		this.questions = questions;
+		this.tests = tests;
 	}
 
 	public Long getCategory_id() {
@@ -74,14 +84,12 @@ public class Category {
 		this.questions = questions;
 	}
 
-	public CategoryResponse toDTO() {
-        return new CategoryResponse(category_id,title,description);
-    }
-	
-	@Override
-	public String toString() {
-		return "Category [category_id=" + category_id + ", title=" + title + ", description=" + description
-				+ ", questions=" + questions + "]";
+	public List<Test> getTests() {
+		return tests;
+	}
+
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
 	}
 
 }

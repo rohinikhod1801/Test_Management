@@ -45,7 +45,8 @@ public class QuestionServiceImpl implements QuestionService {
 	public QuestionsResponse getQuestionsById(Long questionId) {
 		Questions question = questionRepository.findById(questionId)
 				.orElseThrow(() -> new EntityNotFoundException("Question not found"));
-		return question.toResponse();
+		
+		return convertToCategoryResponse(question);
 	}
 
 	@Override
