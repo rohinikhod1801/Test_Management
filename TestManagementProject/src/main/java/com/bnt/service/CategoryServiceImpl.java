@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.Category;
+import com.bnt.model.CategoryRequest;
 import com.bnt.model.CategoryResponse;
 import com.bnt.repository.CategoryRepository;
 
@@ -18,8 +18,8 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository repository;
 		
 	@Override
-	public Category addNewCategory(Category category) {
-		Category newCategory = new Category();
+	public CategoryRequest addNewCategory(CategoryRequest category) {
+		CategoryRequest newCategory = new CategoryRequest();
         newCategory.setTitle(category.getTitle());
         newCategory.setDescription(category.getDescription());
 		return this.repository.save(newCategory);
@@ -27,10 +27,10 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<CategoryResponse> getAllCatogory() {
-	    List<Category> categories = repository.findAll();
+	    List<CategoryRequest> categories = repository.findAll();
 	    List<CategoryResponse> categoryResponses = new ArrayList<>();
 
-	    for (Category category : categories) {
+	    for (CategoryRequest category : categories) {
 	        categoryResponses.add(category.toResponse());
 	    }
 
@@ -38,22 +38,22 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	public CategoryResponse getCategoryById(Long categoryId) {
-	    Category category = repository.findById(categoryId)
+	    CategoryRequest category = repository.findById(categoryId)
 	            .orElseThrow(() -> new CategoryNotFoundException("Category not found"+ categoryId));
 	    return convertToCategoryResponse(category);
 	}
 
 
 	@Override
-	public CategoryResponse updateCategory(Category category) {
+	public CategoryResponse updateCategory(CategoryRequest category) {
 	    try {
-	        Category existingCategory = this.repository.findById(category.getCategoryId())
+	        CategoryRequest existingCategory = this.repository.findById(category.getCategoryId())
 	                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
 	        existingCategory.setTitle(category.getTitle());
 	        existingCategory.setDescription(category.getDescription());
 
-	        Category updatedCategory = this.repository.save(existingCategory);
+	        CategoryRequest updatedCategory = this.repository.save(existingCategory);
 	        return convertToCategoryResponse(updatedCategory);
 	    } catch (CategoryNotFoundException e) {
 	        throw new CategoryNotFoundException("Failed to update category" + category.getCategoryId() + " not found");
@@ -73,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 
-	private CategoryResponse convertToCategoryResponse(Category category) {
+	private CategoryResponse convertToCategoryResponse(CategoryRequest category) {
 	    CategoryResponse updateCategory = new CategoryResponse();
 	    updateCategory.setCategoryId(category.getCategoryId());
 	    updateCategory.setCategoryName(category.getTitle()); 

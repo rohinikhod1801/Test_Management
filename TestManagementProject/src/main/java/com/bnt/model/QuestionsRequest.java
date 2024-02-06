@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "questions")
-public class Questions {
+public class QuestionsRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +34,14 @@ public class Questions {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryRequest category;
 
     @JsonIgnore
     @ManyToMany  
 	@JoinTable(name = "question_test",joinColumns = @JoinColumn(name = "question_id"),inverseJoinColumns = @JoinColumn(name = "test_id"))   
-	private List<TestManagement> tests;
+	private List<TestRequest> tests;
 
-	public Questions() {
+	public QuestionsRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -119,22 +119,22 @@ public class Questions {
 		this.marks = marks;
 	}
 
-	public Category getCategory() {
+	public CategoryRequest getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(CategoryRequest category) {
 		if (category == null) {
 	        throw new IllegalArgumentException("Category cannot be null");
 	    }
 		this.category = category;
 	}
 
-	public List<TestManagement> getTests() {
+	public List<TestRequest> getTests() {
 		return tests;
 	}
 
-	public void setTests(List<TestManagement> tests) {
+	public void setTests(List<TestRequest> tests) {
 		this.tests = tests;
 	}
 

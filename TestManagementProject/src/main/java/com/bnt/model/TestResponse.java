@@ -9,12 +9,12 @@ public class TestResponse {
     private int maxMarks;
     private int numberofQuestions;
     private boolean active;
-    private List<Questions> questionIds;
+    private List<QuestionsRequest> questionIds;
 	public TestResponse() {
 		super();
 	}
 	public TestResponse(String title, String description, int maxMarks, int numberofQuestions, boolean active,
-			List<Questions> questionIds) {
+			List<QuestionsRequest> questionIds) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -53,10 +53,10 @@ public class TestResponse {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	public List<Questions> getQuestionIds() {
+	public List<QuestionsRequest> getQuestionIds() {
 		return questionIds;
 	}
-	public void setQuestionIds(List<Questions> questionIds) {
+	public void setQuestionIds(List<QuestionsRequest> questionIds) {
 		this.questionIds = questionIds;
 	}
 	@Override

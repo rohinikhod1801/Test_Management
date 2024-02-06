@@ -6,17 +6,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-class QuestionsTest {
+class QuestionsRequestTest {
 
 	@Test
 	public void testQuestionsModel() {
 
-		Category category = new Category();
+		CategoryRequest category = new CategoryRequest();
 		category.setCategoryId(1L);
 		category.setTitle("Spring Core");
 		category.setDescription("This is Spring Core Category Created");
 
-		Questions question = new Questions();
+		QuestionsRequest question = new QuestionsRequest();
 		question.setContent("What is the largest mammal in the india");
 		question.setOption1("African Elephant");
 		question.setOption2("Blue Whale");
@@ -39,7 +39,7 @@ class QuestionsTest {
 	@Test
 	public void testQuestionsModelWithNullContent() {
 		try {
-			Questions question = new Questions();
+			QuestionsRequest question = new QuestionsRequest();
 			question.setContent(null);
 			question.setOption1("Blue Whale");
 			fail("Expected IllegalArgumentException, but no exception was thrown");
@@ -51,7 +51,7 @@ class QuestionsTest {
 	@Test
 	public void testQuestionsModelWithBlankOption1() {
 		try {
-			Questions question = new Questions();
+			QuestionsRequest question = new QuestionsRequest();
 			question.setContent("What is the largest mammal in the india");
 			question.setOption1("   "); // Blank option1
 			fail("Expected IllegalArgumentException, but no exception was thrown");
@@ -63,7 +63,7 @@ class QuestionsTest {
 	@Test
 	public void testQuestionsModelWithNegativeMarks() {
 		try {
-			Questions question = new Questions();
+			QuestionsRequest question = new QuestionsRequest();
 			question.setContent("What is the largest mammal in the india");
 			question.setOption1("Blue Whale");
 			question.setMarks(-5);
@@ -76,7 +76,7 @@ class QuestionsTest {
 	@Test
 	public void testQuestionsModelWithNullCategory() {
 		try {
-			Questions question = new Questions();
+			QuestionsRequest question = new QuestionsRequest();
 			question.setContent("What is the largest mammal in the india");
 			question.setOption1("Blue Whale");
 			question.setCategory(null);

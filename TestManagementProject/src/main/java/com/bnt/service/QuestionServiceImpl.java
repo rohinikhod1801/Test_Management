@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.Category;
-import com.bnt.model.Questions;
+import com.bnt.model.CategoryRequest;
+import com.bnt.model.QuestionsRequest;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.repository.CategoryRepository;
 import com.bnt.repository.QuestionRepository;
@@ -26,8 +26,8 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public void addQuestion(Long categoryId, Questions question) {
-		Category category = repository.findById(categoryId)
+	public void addQuestion(Long categoryId, QuestionsRequest question) {
+		CategoryRequest category = repository.findById(categoryId)
 				.orElseThrow(() -> new QuestionNotFoundException("Category not found"));
 		question.setCategory(category);
 		questionRepository.save(question);
@@ -35,10 +35,10 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public List<QuestionsResponse> getAllQuestions() {
-	    List<Questions> questions = questionRepository.findAll();
+	    List<QuestionsRequest> questions = questionRepository.findAll();
 	    List<QuestionsResponse> questionsResponses = new ArrayList<>();
 
-	    for (Questions question : questions) {
+	    for (QuestionsRequest question : questions) {
 	        questionsResponses.add(question.toResponse());
 	    }
 
@@ -47,7 +47,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public QuestionsResponse getQuestionsById(Long questionId) {
-	    Questions question = questionRepository.findById(questionId).orElse(null);
+	    QuestionsRequest question = questionRepository.findById(questionId).orElse(null);
 
 	    if (question == null) {
 	        throw new QuestionNotFoundException("Question not found");
@@ -58,9 +58,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 	@Override
-	public QuestionsResponse updateQuestion(Questions request) {
+	public QuestionsResponse updateQuestion(QuestionsRequest request) {
 		try {
-			Questions existingQuestion = questionRepository.findById(request.getQuestionId())
+			QuestionsRequest existingQuestion = questionRepository.findById(request.getQuestionId())
 					.orElseThrow(() -> new QuestionNotFoundException("Question not found"));
 			existingQuestion.setQuestionId(request.getQuestionId());
 			existingQuestion.setContent(request.getContent());
@@ -71,7 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
 			existingQuestion.setAnswer(request.getAnswer());
 			existingQuestion.setMarks(request.getMarks());
 
-			Questions response = questionRepository.save(existingQuestion);
+			QuestionsRequest response = questionRepository.save(existingQuestion);
 			return convertToCategoryResponse(response);
 		} catch (Exception e) {
 			throw new QuestionNotFoundException("Failed to update question"+e);
@@ -86,8 +86,9 @@ public class QuestionServiceImpl implements QuestionService {
 	        questionRepository.deleteById(questionId);
 	    }
 
-	private QuestionsResponse convertToCategoryResponse(Questions questions) {
+	private QuestionsResponse convertToCategoryResponse(QuestionsRequest questions) {
 		QuestionsResponse response = new QuestionsResponse();
+		response.setQuestionId(questions.getQuestionId());
 		response.setContent(questions.getContent());
 		response.setOption1(questions.getOption1());
 		response.setOption2(questions.getOption2());

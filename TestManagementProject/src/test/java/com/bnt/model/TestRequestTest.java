@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class TestManagementTest {
+class TestRequestTest {
 
 	@Test
 	public void testCreateTestWithValidData() {
-		TestManagement test = new TestManagement();
+		TestRequest test = new TestRequest();
 		test.setTitle("Core Java Test");
 		test.setDescription("Created Core Java Test");
 		test.setMaxMarks(100);
@@ -25,7 +25,7 @@ class TestManagementTest {
 	@Test
 	public void testCreateTestWithNullTitle() {
 		try {
-			TestManagement test = new TestManagement();
+			TestRequest test = new TestRequest();
 			test.setTitle(null);
 			test.setDescription("Created Spring MVC Test");
 			test.setMaxMarks(100);
@@ -41,7 +41,7 @@ class TestManagementTest {
 	@Test
 	public void testCreateTestWithBlankDescription() {
 		try {
-			TestManagement test = new TestManagement();
+			TestRequest test = new TestRequest();
 			test.setTitle("Hibernate");
 			test.setDescription("   "); // Blank description
 			test.setMaxMarks(100);
@@ -57,7 +57,7 @@ class TestManagementTest {
 	@Test
 	public void testCreateTestWithNegativeMaxMarks() {
 		try {
-			TestManagement test = new TestManagement();
+			TestRequest test = new TestRequest();
 			test.setTitle("JSP");
 			test.setDescription("Created JSP Test");
 			test.setMaxMarks(-50);
@@ -73,7 +73,7 @@ class TestManagementTest {
 	@Test
 	public void testCreateTestWithNegativeNumberOfQuestions() {
 		try {
-			TestManagement test = new TestManagement();
+			TestRequest test = new TestRequest();
 			test.setTitle("Angular");
 			test.setDescription("Created Angular Test");
 			test.setMaxMarks(100);

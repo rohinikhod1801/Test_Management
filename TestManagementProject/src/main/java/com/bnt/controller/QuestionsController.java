@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.Questions;
+import com.bnt.model.QuestionsRequest;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
@@ -33,7 +33,7 @@ public class QuestionsController {
 	@PostMapping("/{category_id}")
 	public ResponseEntity<String> addQuestionToCategory(
 			@PathVariable("category_id") Long category_id,
-	        @RequestBody Questions question) {
+	        @RequestBody QuestionsRequest question) {
 	    
 	    try {
 	    	if (category_id == null) {
@@ -67,7 +67,7 @@ public class QuestionsController {
 
 	 @PutMapping
 	 public ResponseEntity<QuestionsResponse> updateQuestion(
-	            @RequestBody Questions updatedQuestionRequest) {
+	            @RequestBody QuestionsRequest updatedQuestionRequest) {
 	        try {
 	        	QuestionsResponse updatedQuestion = service.updateQuestion(updatedQuestionRequest);
 	            return ResponseEntity.ok(updatedQuestion);

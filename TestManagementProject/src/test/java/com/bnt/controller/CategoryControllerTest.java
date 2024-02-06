@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.Category;
+import com.bnt.model.CategoryRequest;
 import com.bnt.model.CategoryResponse;
 import com.bnt.service.CategoryService;
 
@@ -30,8 +30,8 @@ class CategoryControllerTest {
 	@InjectMocks
 	private CategoryController categoryController;
 
-	public Category categoryData() {
-		Category category = new Category();
+	public CategoryRequest categoryData() {
+		CategoryRequest category = new CategoryRequest();
 		category.setCategoryId(1L);
 		category.setTitle("Spring Core");
 		category.setDescription("This is Spring Core Category Created");
@@ -41,11 +41,11 @@ class CategoryControllerTest {
 	@Test
 	public void testAddNewCategory() {
 
-		Category category = categoryData();
+		CategoryRequest category = categoryData();
 
-		when(categoryService.addNewCategory(any(Category.class))).thenReturn(category);
+		when(categoryService.addNewCategory(any(CategoryRequest.class))).thenReturn(category);
 
-		Category result = categoryController.addNewCategory(category);
+		CategoryRequest result = categoryController.addNewCategory(category);
 
 		assertEquals(category, result);
 	}
@@ -53,7 +53,7 @@ class CategoryControllerTest {
 	@Test
 	public void testGetAllCategory() {
 		List<CategoryResponse> mockCategories = new ArrayList<>();
-		Category category = categoryData();
+		CategoryRequest category = categoryData();
 		mockCategories.add(category.toResponse());
 
 		when(categoryService.getAllCatogory()).thenReturn(mockCategories);
@@ -81,7 +81,7 @@ class CategoryControllerTest {
 	@Test
 	public void testUpdateCategory_Success() {
 
-		Category categoryToUpdate = categoryData();
+		CategoryRequest categoryToUpdate = categoryData();
 		CategoryResponse mockUpdatedCategory = new CategoryResponse(1L, "Spring Core",
 				"This is Spring Core Category Created");
 		when(categoryService.updateCategory(categoryToUpdate)).thenReturn(mockUpdatedCategory);
@@ -116,7 +116,7 @@ class CategoryControllerTest {
 	@Test
 	public void testUpdateCategory_CategoryNotFound() {
 
-		Category categoryToUpdate = new Category();
+		CategoryRequest categoryToUpdate = new CategoryRequest();
 		when(categoryService.updateCategory(categoryToUpdate))
 				.thenThrow(new CategoryNotFoundException("Category not found"));
 
