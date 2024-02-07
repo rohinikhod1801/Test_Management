@@ -7,7 +7,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -23,13 +22,13 @@ import com.bnt.model.TestResponse;
 import com.bnt.service.TestServiceImpl;
 
 @SpringBootTest
-class TestControllerTest {
+class TestManagementTest {
 
 	@Mock
 	private TestServiceImpl testService;
 
 	@InjectMocks
-	private TestController testController;
+	private TestManagement tests;
 	
 	public TestRequest addTestData() {
 		TestRequest test = new TestRequest();
@@ -47,7 +46,7 @@ class TestControllerTest {
 	public void testCreateTest() {
 		TestRequest test=addTestData();		
 		when(testService.addTest(test)).thenReturn(test);
-		ResponseEntity<TestRequest> responseEntity = testController.createTest(test);
+		ResponseEntity<TestRequest> responseEntity = tests.createTest(test);
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 		assertEquals(test, responseEntity.getBody());
 	}
@@ -58,7 +57,7 @@ class TestControllerTest {
 	    List<TestResponse> testList = new ArrayList<>(); 
 	    testList.add(test.toResponse()); 
 	    when(testService.getAllTest()).thenReturn(testList);
-	    ResponseEntity<List<TestResponse>> responseEntity = testController.getAllTests();
+	    ResponseEntity<List<TestResponse>> responseEntity = tests.getAllTests();
 	    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	    assertEquals(testList, responseEntity.getBody());
 	}
@@ -73,7 +72,7 @@ class TestControllerTest {
 		testResponse.setMaxMarks(50);
 		testResponse.setActive(false);
 		when(testService.getTestById(testId)).thenReturn(testResponse);
-		ResponseEntity<TestResponse> responseEntity = testController.getTestById(testId);
+		ResponseEntity<TestResponse> responseEntity = tests.getTestById(testId);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(testResponse, responseEntity.getBody());
 	}
@@ -82,27 +81,27 @@ class TestControllerTest {
 	public void testGetTestById_NotExists() {		
 		Long testId = 1L;
 		 when(testService.getTestById(testId)).thenThrow(new TestIdNotExistException("Test not found"));
-		assertThrows(TestIdNotExistException.class, () -> testController.getTestById(testId));
+		assertThrows(TestIdNotExistException.class, () -> tests.getTestById(testId));
 	}
 
 	@Test
 	public void testUpdateTest() {	
 		TestRequest test =addTestData();
 		when(testService.updateTest(test)).thenReturn(new TestResponse());
-		ResponseEntity<TestResponse> responseEntity = testController.updateTest(test);
+		ResponseEntity<TestResponse> responseEntity = tests.updateTest(test);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 	@Test
 	public void testUpdateTest_NotExists() {	   
 	    TestRequest test = addTestData();
 	    when(testService.updateTest(test)).thenThrow(new TestIdNotExistException("Test not found"));
-	    assertThrows(TestIdNotExistException.class, () -> testController.updateTest(test));
+	    assertThrows(TestIdNotExistException.class, () -> tests.updateTest(test));
 	}
 
 	@Test
 	public void testDeleteTest_Exists() {
 		Long testId = 1L;
-		ResponseEntity<String> responseEntity = testController.deleteTest(testId);
+		ResponseEntity<String> responseEntity = tests.deleteTest(testId);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNull(responseEntity.getBody());
 	}
@@ -111,7 +110,7 @@ class TestControllerTest {
 	public void testDeleteTest_NotExists() {	
 		Long testId = 1L;
 	    doThrow(new TestIdNotExistException("Test not found")).when(testService).deleteTest(testId);
-	    assertThrows(TestIdNotExistException.class, () -> testController.deleteTest(testId));
+	    assertThrows(TestIdNotExistException.class, () -> tests.deleteTest(testId));
 	}
 
 }

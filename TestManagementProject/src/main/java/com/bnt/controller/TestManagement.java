@@ -22,10 +22,10 @@ import com.bnt.model.TestResponse;
 import com.bnt.service.TestServiceImpl;
 
 @RestController
-@RequestMapping("/testController")
-public class TestController {
+@RequestMapping("/tests")
+public class TestManagement {
 
-	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(TestManagement.class);
 
 	@Autowired
 	private TestServiceImpl testService;
