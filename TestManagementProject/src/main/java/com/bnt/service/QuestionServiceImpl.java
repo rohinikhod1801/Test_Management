@@ -1,8 +1,16 @@
 package com.bnt.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +105,35 @@ public class QuestionServiceImpl implements QuestionService {
 		response.setAnswer(questions.getAnswer());
 		response.setMarks(questions.getMarks());
 		return response;
+	}
+	
+	@Override
+	public List<QuestionsRequest> importQuestionsFromExcel(InputStream excelInputStream) throws IOException {
+		Workbook workbook = WorkbookFactory.create(excelInputStream);
+		List<QuestionsRequest> importedQuestions = new ArrayList<>();
+
+		Sheet sheet = workbook.getSheetAt(0);
+		for (Row row : sheet) {
+			QuestionsRequest question = new QuestionsRequest();
+			question.setContent(getCellValue(row.getCell(0)));
+			question.setOption1(getCellValue(row.getCell(1)));
+			question.setOption2(getCellValue(row.getCell(2)));
+			question.setOption3(getCellValue(row.getCell(3)));
+			question.setOption4(getCellValue(row.getCell(4)));
+			question.setAnswer(getCellValue(row.getCell(5)));
+			question.setMarks(getCellValue(row.getCell(6)));
+
+			importedQuestions.add(questionRepository.save(question));
+		}
+		return importedQuestions;
+	}
+
+	private String getCellValue(Cell cell) {
+		if (cell == null) {
+			return null;
+		}
+		cell.setCellType(CellType.STRING);
+		return cell.getStringCellValue();
 	}
 
 }

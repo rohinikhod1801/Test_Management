@@ -9,15 +9,16 @@ public class QuestionsResponse {
 	private String option3;
 	private String option4;
 	private String answer;
-	private int marks;
+	private String marks;
 
 	public QuestionsResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public QuestionsResponse(Long questionId, String content, String option1, String option2, String option3,
-			String option4, String answer, int marks) {
+			String option4, String answer, String marks) {
 		super();
 		this.questionId = questionId;
 		this.content = content;
@@ -28,6 +29,7 @@ public class QuestionsResponse {
 		this.answer = answer;
 		this.marks = marks;
 	}
+
 
 	public Long getQuestionId() {
 		return questionId;
@@ -85,11 +87,14 @@ public class QuestionsResponse {
 		this.answer = answer;
 	}
 
-	public int getMarks() {
+	public String getMarks() {
 		return marks;
 	}
 
-	public void setMarks(int marks) {
+	public void setMarks(String marks) {
+		if (marks == null || marks.trim().isEmpty()) {
+	        throw new IllegalArgumentException("Content cannot be null or blank");
+	    }
 		this.marks = marks;
 	}
 

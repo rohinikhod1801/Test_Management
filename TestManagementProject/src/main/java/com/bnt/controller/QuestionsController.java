@@ -1,10 +1,13 @@
 package com.bnt.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
@@ -37,7 +42,7 @@ public class QuestionsController {
 	    
 	    try {
 	    	if (category_id == null) {
-                throw new QuestionNotFoundException("Category ID is required");
+                throw new CategoryNotFoundException("Category ID is required");
             }
             service.addQuestion(category_id, question);
             return ResponseEntity.ok("Question added to category successfully");
@@ -88,4 +93,18 @@ public class QuestionsController {
 			}
 
 		}
+	 
+	 @PostMapping("/import")
+	 public ResponseEntity<List<QuestionsRequest>> importQuestions(@RequestParam("file") MultipartFile file) {
+	        try {
+	        	logger.info("Importing questions from Excel file");
+	            InputStream excelInputStream = file.getInputStream();
+	            List<QuestionsRequest> importedQuestions = service.importQuestionsFromExcel(excelInputStream);
+	            return ResponseEntity.ok(importedQuestions);
+	        } catch (IOException e) {
+	        	logger.error("Error importing questions from Excel file: {}", e.getMessage());
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	        }
+	    }
+
 }

@@ -23,7 +23,7 @@ class QuestionsRequestTest {
 		question.setOption3("Giraffe");
 		question.setOption4("Polar Bear");
 		question.setAnswer("Blue Whale");
-		question.setMarks(10);
+		question.setMarks("100");
 		question.setCategory(category);
 
 		assertEquals("What is the largest mammal in the india", question.getContent());
@@ -32,7 +32,7 @@ class QuestionsRequestTest {
 		assertEquals("Giraffe", question.getOption3());
 		assertEquals("Polar Bear", question.getOption4());
 		assertEquals("Blue Whale", question.getAnswer());
-		assertEquals(10, question.getMarks());
+		assertEquals("100", question.getMarks());
 		assertNotNull(question.getCategory());
 	}
 
@@ -59,20 +59,7 @@ class QuestionsRequestTest {
 
 		}
 	}
-
-	@Test
-	public void testQuestionsModelWithNegativeMarks() {
-		try {
-			QuestionsRequest question = new QuestionsRequest();
-			question.setContent("What is the largest mammal in the india");
-			question.setOption1("Blue Whale");
-			question.setMarks(-5);
-			fail("Expected IllegalArgumentException, but no exception was thrown");
-		} catch (IllegalArgumentException e) {
-
-		}
-	}
-
+	
 	@Test
 	public void testQuestionsModelWithNullCategory() {
 		try {

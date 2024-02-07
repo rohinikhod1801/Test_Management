@@ -1,5 +1,7 @@
 package com.bnt.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import com.bnt.model.QuestionsRequest;
@@ -16,6 +18,8 @@ public interface QuestionService {
 	public QuestionsResponse updateQuestion(QuestionsRequest questions);
 
 	public void deleteQuestion(Long questionId);
+
+	List<QuestionsRequest> importQuestionsFromExcel(InputStream excelInputStream) throws IOException;
 
 	
 }

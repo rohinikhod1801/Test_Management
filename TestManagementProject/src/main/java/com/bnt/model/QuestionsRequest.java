@@ -29,7 +29,7 @@ public class QuestionsRequest {
     private String option3;
     private String option4;
     private String answer;
-    private int marks;
+    private String marks;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -108,13 +108,13 @@ public class QuestionsRequest {
 		this.answer = answer;
 	}
 
-	public int getMarks() {
+	public String getMarks() {
 		return marks;
 	}
 
-	public void setMarks(int marks) {
-		if (marks < 0) {
-	        throw new IllegalArgumentException("Marks cannot be negative");
+	public void setMarks(String marks) {
+		if (marks == null || marks.trim().isEmpty()) {
+	        throw new IllegalArgumentException("Content cannot be null or blank");
 	    }
 		this.marks = marks;
 	}

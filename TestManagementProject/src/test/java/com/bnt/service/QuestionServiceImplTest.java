@@ -43,6 +43,7 @@ class QuestionServiceImplTest {
 		question.setOption3("hard to understand");
 		question.setOption4("Independant easy to understand");
 		question.setAnswer("Independant easy to understand");
+		question.setMarks("100");
 		return question;
 
 	}
@@ -101,7 +102,7 @@ class QuestionServiceImplTest {
 		existingQuestion.setOption3("Option3");
 		existingQuestion.setOption4("Option4");
 		existingQuestion.setAnswer("Existing Answer");
-		existingQuestion.setMarks(10);
+		existingQuestion.setMarks("100");
 
 		QuestionsRequest request = new QuestionsRequest();
 		request.setQuestionId(questionId);
@@ -111,7 +112,7 @@ class QuestionServiceImplTest {
 		request.setOption3("Updated Option3");
 		request.setOption4("Updated Option4");
 		request.setAnswer("Updated Answer");
-		request.setMarks(15);
+		request.setMarks("100");
 
 		when(questionRepository.findById(questionId)).thenReturn(Optional.of(existingQuestion));
 		when(questionRepository.save(any())).thenReturn(request);
