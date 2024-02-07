@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
+import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.CategoryRequest;
 import com.bnt.model.QuestionsRequest;
@@ -21,13 +22,13 @@ import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
 @SpringBootTest
-class QuestionsControllerTest {
+class QuestionManagementTest {
 
 	@Mock
 	private QuestionService questionService;
 
 	@InjectMocks
-	private QuestionsController questionsController;
+	private QuestionManagement questions;
 
 	public QuestionsRequest setAddQuestionRequest() {
 		CategoryRequest category = new CategoryRequest();
@@ -52,7 +53,7 @@ class QuestionsControllerTest {
 		Long categoryId = 1L;
 		QuestionsRequest question = setAddQuestionRequest();
 		ResponseEntity<String> expectedResponse = ResponseEntity.ok("Question added to category successfully");
-		ResponseEntity<String> actualResponse = questionsController.addQuestionToCategory(categoryId, question);
+		ResponseEntity<String> actualResponse = questions.addQuestionToCategory(categoryId, question);
 		assertEquals(expectedResponse, actualResponse);
 
 	}
@@ -62,7 +63,7 @@ class QuestionsControllerTest {
 
 		Long categoryId = 1L;
 		QuestionsRequest question = new QuestionsRequest();
-		questionsController.addQuestionToCategory(categoryId, question);
+		questions.addQuestionToCategory(categoryId, question);
 	}
 
 	@Test
@@ -70,8 +71,8 @@ class QuestionsControllerTest {
 
 		Long categoryId = null;
 		QuestionsRequest question = setAddQuestionRequest();
-		assertThrows(QuestionNotFoundException.class, () -> {
-			questionsController.addQuestionToCategory(categoryId, question);
+		assertThrows(CategoryNotFoundException.class, () -> {
+			questions.addQuestionToCategory(categoryId, question);
 		});
 
 	}
@@ -81,7 +82,7 @@ class QuestionsControllerTest {
 
 		List<QuestionsResponse> expectedQuestions = Arrays.asList(new QuestionsResponse(), new QuestionsResponse());
 		when(questionService.getAllQuestions()).thenReturn(expectedQuestions);
-		List<QuestionsResponse> actualQuestions = questionsController.getAllQuestions();
+		List<QuestionsResponse> actualQuestions = questions.getAllQuestions();
 		assertNotNull(actualQuestions);
 		assertEquals(expectedQuestions, actualQuestions);
 	}
@@ -93,7 +94,7 @@ class QuestionsControllerTest {
 		QuestionsResponse expectedResponse = new QuestionsResponse();
 
 		when(questionService.getQuestionsById(questionId)).thenReturn(expectedResponse);
-		ResponseEntity<QuestionsResponse> actualResponse = questionsController.getQuestionById(questionId);
+		ResponseEntity<QuestionsResponse> actualResponse = questions.getQuestionById(questionId);
 		assertEquals(ResponseEntity.ok(expectedResponse), actualResponse);
 
 	}
@@ -106,7 +107,7 @@ class QuestionsControllerTest {
 		try {
 			when(questionService.getQuestionsById(questionId))
 					.thenThrow(new QuestionNotFoundException("Question not found"));
-			questionsController.getQuestionById(questionId);
+			questions.getQuestionById(questionId);
 		} catch (QuestionNotFoundException e) {
 
 		}
@@ -118,7 +119,7 @@ class QuestionsControllerTest {
 		QuestionsRequest updatedQuestionRequest = new QuestionsRequest();
 		QuestionsResponse expectedResponse = new QuestionsResponse();
 		when(questionService.updateQuestion(updatedQuestionRequest)).thenReturn(expectedResponse);
-		ResponseEntity<QuestionsResponse> actualResponse = questionsController.updateQuestion(updatedQuestionRequest);
+		ResponseEntity<QuestionsResponse> actualResponse = questions.updateQuestion(updatedQuestionRequest);
 		assertEquals(ResponseEntity.ok(expectedResponse), actualResponse);
 	}
 
@@ -126,7 +127,7 @@ class QuestionsControllerTest {
 	public void testDeleteQuestion_Success() {
 
 		Long questionId = 1L;
-		ResponseEntity<Long> actualResponse = questionsController.deleteCategory(questionId);
+		ResponseEntity<Long> actualResponse = questions.deleteCategory(questionId);
 		assertEquals(ResponseEntity.ok(questionId), actualResponse);
 	}
 

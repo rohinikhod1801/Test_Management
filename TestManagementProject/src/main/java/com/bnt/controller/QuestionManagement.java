@@ -27,10 +27,10 @@ import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
 @RestController
-@RequestMapping("/questionController")
-public class QuestionsController {
+@RequestMapping("/questions")
+public class QuestionManagement {
 	
-	private static final Logger logger = LoggerFactory.getLogger(QuestionsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(QuestionManagement.class);
 
 	@Autowired
 	QuestionService service;
