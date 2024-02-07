@@ -51,14 +51,14 @@ public class QuestionsController {
         } 
 	}
 	
-	@GetMapping("/questions")
+	@GetMapping
 	public List<QuestionsResponse> getAllQuestions() {	
 		List<QuestionsResponse> questions= service.getAllQuestions();
 		logger.info("Getting all Questions: {}",questions.toString());
 		return questions;
 	}
 	
-	@GetMapping("/questions/{questionId}")
+	@GetMapping("/{questionId}")
 	public ResponseEntity<QuestionsResponse> getQuestionById(@PathVariable("questionId") Long questionId) {
 		try {
 			QuestionsResponse response = service.getQuestionsById(questionId);
@@ -94,7 +94,7 @@ public class QuestionsController {
 
 		}
 	 
-	 @PostMapping("/import")
+	 @PostMapping
 	 public ResponseEntity<List<QuestionsRequest>> importQuestions(@RequestParam("file") MultipartFile file) {
 	        try {
 	        	logger.info("Importing questions from Excel file");

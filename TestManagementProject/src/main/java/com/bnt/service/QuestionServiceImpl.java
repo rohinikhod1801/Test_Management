@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.QuestionNotFoundException;
@@ -27,7 +26,6 @@ public class QuestionServiceImpl implements QuestionService {
 	private final CategoryRepository repository;
 	private final QuestionRepository questionRepository;
 
-	@Autowired
 	public QuestionServiceImpl(CategoryRepository repository, QuestionRepository questionRepository) {
 		this.repository = repository;
 		this.questionRepository = questionRepository;

@@ -14,7 +14,6 @@ import com.bnt.repository.TestRepository;
 @Service
 public class TestServiceImpl implements TestService {
 
-    @Autowired
     private TestRepository testRepository;
 
     @Override

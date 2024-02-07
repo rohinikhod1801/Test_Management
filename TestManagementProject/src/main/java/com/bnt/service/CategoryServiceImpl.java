@@ -3,7 +3,6 @@ package com.bnt.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.CategoryNotFoundException;
@@ -14,8 +13,11 @@ import com.bnt.repository.CategoryRepository;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-	@Autowired
 	private CategoryRepository repository;
+	
+	public CategoryServiceImpl(CategoryRepository repository) {
+		this.repository=repository;
+	}
 		
 	@Override
 	public CategoryRequest addNewCategory(CategoryRequest category) {
