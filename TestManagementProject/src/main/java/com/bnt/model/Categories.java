@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "category")
-public class CategoryRequest {
+public class Categories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class CategoryRequest {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<QuestionsRequest> questions;
 
-	public CategoryRequest() {
+	public Categories() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

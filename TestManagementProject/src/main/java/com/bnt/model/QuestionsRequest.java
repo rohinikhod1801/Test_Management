@@ -34,7 +34,7 @@ public class QuestionsRequest {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private CategoryRequest category;
+    private Categories category;
 
     @JsonIgnore
     @ManyToMany  
@@ -119,11 +119,11 @@ public class QuestionsRequest {
 		this.marks = marks;
 	}
 
-	public CategoryRequest getCategory() {
+	public Categories getCategory() {
 		return category;
 	}
 
-	public void setCategory(CategoryRequest category) {
+	public void setCategory(Categories category) {
 		if (category == null) {
 	        throw new IllegalArgumentException("Category cannot be null");
 	    }

@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.CategoryRequest;
+import com.bnt.model.Categories;
 import com.bnt.model.QuestionsRequest;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.repository.CategoryRepository;
@@ -33,7 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public void addQuestion(Long categoryId, QuestionsRequest question) {
-		CategoryRequest category = repository.findById(categoryId)
+		Categories category = repository.findById(categoryId)
 				.orElseThrow(() -> new QuestionNotFoundException("Category not found"));
 		question.setCategory(category);
 		questionRepository.save(question);

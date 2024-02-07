@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.CategoryRequest;
+import com.bnt.model.Categories;
 import com.bnt.model.QuestionsRequest;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
@@ -31,7 +31,7 @@ class QuestionManagementTest {
 	private QuestionManagement questions;
 
 	public QuestionsRequest setAddQuestionRequest() {
-		CategoryRequest category = new CategoryRequest();
+		Categories category = new Categories();
 		category.setCategoryId(2l);
 		category.setTitle("Spring boot");
 		category.setDescription("this is spring boot Category");

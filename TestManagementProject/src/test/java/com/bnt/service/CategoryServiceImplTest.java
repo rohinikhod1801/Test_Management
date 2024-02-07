@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.CategoryRequest;
+import com.bnt.model.Categories;
 import com.bnt.model.CategoryResponse;
 import com.bnt.repository.CategoryRepository;
 
@@ -28,8 +28,8 @@ class CategoryServiceImplTest {
 	@InjectMocks
 	private CategoryServiceImpl categoryService;
 
-	public CategoryRequest setCategoryRequest() {
-		CategoryRequest category = new CategoryRequest();
+	public Categories setCategoryRequest() {
+		Categories category = new Categories();
 		category.setCategoryId(1L);
 		category.setTitle("Spring Core");
 		category.setDescription("This is Spring Core Category Created");
@@ -41,17 +41,17 @@ class CategoryServiceImplTest {
 	@Test
 	public void testAddNewCategory() {
 
-		CategoryRequest inputCategory = setCategoryRequest();
+		Categories inputCategory = setCategoryRequest();
 		when(categoryRepository.save(any())).thenReturn(inputCategory);
-		CategoryRequest result = categoryService.addNewCategory(inputCategory);
+		Categories result = categoryService.addNewCategory(inputCategory);
 		assertEquals(inputCategory, result);
 	}
 
 	@Test
 	public void testGetAllCategory() {
 
-		CategoryRequest inputCategory = setCategoryRequest();
-		List<CategoryRequest> categories = new ArrayList<>();
+		Categories inputCategory = setCategoryRequest();
+		List<Categories> categories = new ArrayList<>();
 		categories.add(inputCategory);
 		when(categoryRepository.findAll()).thenReturn(categories);
 		List<CategoryResponse> result = categoryService.getAllCatogory();
@@ -61,7 +61,7 @@ class CategoryServiceImplTest {
 	@Test
 	public void testGetCategoryById() {
 		Long categoryId = 1L;
-		CategoryRequest category = setCategoryRequest();
+		Categories category = setCategoryRequest();
 		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 		CategoryResponse result = categoryService.getCategoryById(categoryId);
 		assertEquals(categoryId, result.getCategoryId());
@@ -82,11 +82,11 @@ class CategoryServiceImplTest {
 	public void testUpdateCategory() {
 
 		Long categoryId = 1L;
-		CategoryRequest inputCategory = new CategoryRequest();
+		Categories inputCategory = new Categories();
 		inputCategory.setCategoryId(categoryId);
 		inputCategory.setTitle("UpdatedTitle");
 		inputCategory.setDescription("UpdatedDescription");
-		CategoryRequest existingCategory = setCategoryRequest();
+		Categories existingCategory = setCategoryRequest();
 		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(existingCategory));
 		when(categoryRepository.save(any())).thenReturn(inputCategory);
 		CategoryResponse result = categoryService.updateCategory(inputCategory);
@@ -99,7 +99,7 @@ class CategoryServiceImplTest {
 	@Test
 	public void testUpdateCategory_NotFound() {
 		Long categoryId = 1L;
-		CategoryRequest inputCategory = new CategoryRequest();
+		Categories inputCategory = new Categories();
 		when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 		assertThrows(CategoryNotFoundException.class, () -> {
 			categoryService.updateCategory(inputCategory);

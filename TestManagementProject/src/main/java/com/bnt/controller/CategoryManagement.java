@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.CategoryRequest;
+import com.bnt.model.Categories;
 import com.bnt.model.CategoryResponse;
 import com.bnt.service.CategoryService;
 
@@ -30,9 +30,9 @@ public class CategoryManagement {
 	private CategoryService service;
 
 	@PostMapping
-	public CategoryRequest addNewCategory(@RequestBody CategoryRequest category) {
+	public Categories addNewCategory(@RequestBody Categories category) {
 
-		CategoryRequest addcategory = service.addNewCategory(category);
+		Categories addcategory = service.addNewCategory(category);
 		logger.info("Added a new category: {}", category);
 		return addcategory;
 
@@ -59,7 +59,7 @@ public class CategoryManagement {
 	}
 
 	@PutMapping
-	public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryRequest category) {
+	public ResponseEntity<CategoryResponse> updateCategory(@RequestBody Categories category) {
 		try {
 			CategoryResponse updatedCategory = service.updateCategory(category);
 			return ResponseEntity.ok(updatedCategory);

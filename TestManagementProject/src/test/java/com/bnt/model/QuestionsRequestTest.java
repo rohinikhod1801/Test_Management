@@ -11,7 +11,7 @@ class QuestionsRequestTest {
 	@Test
 	public void testQuestionsModel() {
 
-		CategoryRequest category = new CategoryRequest();
+		Categories category = new Categories();
 		category.setCategoryId(1L);
 		category.setTitle("Spring Core");
 		category.setDescription("This is Spring Core Category Created");

@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.CategoryRequest;
+import com.bnt.model.Categories;
 import com.bnt.model.QuestionsRequest;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.repository.CategoryRepository;
@@ -52,7 +52,7 @@ class QuestionServiceImplTest {
 	public void testAddQuestion() {
 
 		Long categoryId = 1L;
-		CategoryRequest category = new CategoryRequest();
+		Categories category = new Categories();
 		category.setCategoryId(categoryId);
 		QuestionsRequest question = setAddQuestionRequest();
 
