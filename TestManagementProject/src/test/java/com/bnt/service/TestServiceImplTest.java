@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.TestRequest;
+import com.bnt.model.Tests;
 import com.bnt.model.TestResponse;
 import com.bnt.repository.TestRepository;
 
@@ -30,8 +30,8 @@ class TestServiceImplTest {
 	@InjectMocks
 	private TestServiceImpl testService;
 
-	public TestRequest addTestData() {
-		TestRequest test = new TestRequest();
+	public Tests addTestData() {
+		Tests test = new Tests();
 		test.setTestId(1L);
 		test.setTitle("Spring Boot");
 		test.setDescription("created new Spring Boot Test");
@@ -44,17 +44,17 @@ class TestServiceImplTest {
 	@Test
 	public void testAddTest() {
 
-		TestRequest test = addTestData();
+		Tests test = addTestData();
 		when(testRepository.save(test)).thenReturn(test);
-		TestRequest result = testService.addTest(test);
+		Tests result = testService.addTest(test);
 		assertNotNull(result);
 		assertEquals(test, result);
 	}
 
 	@Test
 	public void testGetAllTest() {
-		TestRequest request = addTestData();
-		List<TestRequest> testList = new ArrayList<>();
+		Tests request = addTestData();
+		List<Tests> testList = new ArrayList<>();
 		testList.add(request);
 		when(testRepository.findAll()).thenReturn(testList);
 		List<TestResponse> result = testService.getAllTest();
@@ -65,7 +65,7 @@ class TestServiceImplTest {
 	public void testGetTestById() {
 
 		Long testId = 1L;
-		TestRequest test = new TestRequest();
+		Tests test = new Tests();
 		test.setTestId(testId);
 		when(testRepository.findById(testId)).thenReturn(Optional.of(test));
 		TestResponse result = testService.getTestById(testId);
@@ -88,13 +88,13 @@ class TestServiceImplTest {
 	public void testUpdateTest() {
 
 		Long testId = 1L;
-		TestRequest request = new TestRequest();
+		Tests request = new Tests();
 		request.setTestId(testId);
 		request.setTitle("Updated Title");
 		request.setDescription("Updated Description");
 		request.setMaxMarks(100);
 		request.setNumberOfQuestions(20);
-		TestRequest existingTest = new TestRequest();
+		Tests existingTest = new Tests();
 		existingTest.setTestId(testId);
 		existingTest.setTitle("Old Title");
 		existingTest.setDescription("Old Description");

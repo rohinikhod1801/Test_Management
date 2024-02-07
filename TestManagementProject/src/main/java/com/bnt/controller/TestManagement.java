@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.TestRequest;
+import com.bnt.model.Tests;
 import com.bnt.model.TestResponse;
 import com.bnt.service.TestServiceImpl;
 
@@ -31,8 +31,8 @@ public class TestManagement {
 	private TestServiceImpl testService;
 
 	@PostMapping
-	public ResponseEntity<TestRequest> createTest(@RequestBody TestRequest test) {
-		TestRequest createdTest = testService.addTest(test);
+	public ResponseEntity<Tests> createTest(@RequestBody Tests test) {
+		Tests createdTest = testService.addTest(test);
 		return new ResponseEntity<>(createdTest, HttpStatus.CREATED);
 	}
 
@@ -55,7 +55,7 @@ public class TestManagement {
 	}
 
 	@PutMapping
-	public ResponseEntity<TestResponse> updateTest(@RequestBody TestRequest test) {
+	public ResponseEntity<TestResponse> updateTest(@RequestBody Tests test) {
 		try {
 			TestResponse updatedTest = testService.updateTest(test);
 			return new ResponseEntity<>(updatedTest, HttpStatus.OK);

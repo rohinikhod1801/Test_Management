@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.TestRequest;
+import com.bnt.model.Tests;
 import com.bnt.model.TestResponse;
 import com.bnt.service.TestServiceImpl;
 
@@ -30,8 +30,8 @@ class TestManagementTest {
 	@InjectMocks
 	private TestManagement tests;
 	
-	public TestRequest addTestData() {
-		TestRequest test = new TestRequest();
+	public Tests addTestData() {
+		Tests test = new Tests();
 		test.setTestId(1L);
 		test.setTitle("Spring Boot");
 		test.setDescription("created new Spring Boot Test");
@@ -44,16 +44,16 @@ class TestManagementTest {
 	
 	@Test
 	public void testCreateTest() {
-		TestRequest test=addTestData();		
+		Tests test=addTestData();		
 		when(testService.addTest(test)).thenReturn(test);
-		ResponseEntity<TestRequest> responseEntity = tests.createTest(test);
+		ResponseEntity<Tests> responseEntity = tests.createTest(test);
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 		assertEquals(test, responseEntity.getBody());
 	}
 
 	@Test
 	public void testGetAllTests() {
-		TestRequest test = addTestData();
+		Tests test = addTestData();
 	    List<TestResponse> testList = new ArrayList<>(); 
 	    testList.add(test.toResponse()); 
 	    when(testService.getAllTest()).thenReturn(testList);
@@ -86,14 +86,14 @@ class TestManagementTest {
 
 	@Test
 	public void testUpdateTest() {	
-		TestRequest test =addTestData();
+		Tests test =addTestData();
 		when(testService.updateTest(test)).thenReturn(new TestResponse());
 		ResponseEntity<TestResponse> responseEntity = tests.updateTest(test);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 	@Test
 	public void testUpdateTest_NotExists() {	   
-	    TestRequest test = addTestData();
+	    Tests test = addTestData();
 	    when(testService.updateTest(test)).thenThrow(new TestIdNotExistException("Test not found"));
 	    assertThrows(TestIdNotExistException.class, () -> tests.updateTest(test));
 	}

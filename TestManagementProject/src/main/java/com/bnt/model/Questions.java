@@ -39,7 +39,7 @@ public class Questions {
     @JsonIgnore
     @ManyToMany  
 	@JoinTable(name = "question_test",joinColumns = @JoinColumn(name = "question_id"),inverseJoinColumns = @JoinColumn(name = "test_id"))   
-	private List<TestRequest> tests;
+	private List<Tests> tests;
 
 	public Questions() {
 		super();
@@ -130,11 +130,11 @@ public class Questions {
 		this.category = category;
 	}
 
-	public List<TestRequest> getTests() {
+	public List<Tests> getTests() {
 		return tests;
 	}
 
-	public void setTests(List<TestRequest> tests) {
+	public void setTests(List<Tests> tests) {
 		this.tests = tests;
 	}
 

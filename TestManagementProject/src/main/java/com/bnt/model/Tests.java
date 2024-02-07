@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "test")
-public class TestRequest {
+public class Tests {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class TestRequest {
 	@ManyToMany(mappedBy = "tests")
 	private List<Questions> question;
 
-	public TestRequest() {
+	public Tests() {
 		super();
 	}
 

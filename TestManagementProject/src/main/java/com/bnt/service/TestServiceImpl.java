@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.TestRequest;
+import com.bnt.model.Tests;
 import com.bnt.model.TestResponse;
 import com.bnt.repository.TestRepository;
 
@@ -17,16 +17,16 @@ public class TestServiceImpl implements TestService {
     private TestRepository testRepository;
 
     @Override
-    public TestRequest addTest(TestRequest test) {
+    public Tests addTest(Tests test) {
         return testRepository.save(test);
     }
 
     @Override
     public List<TestResponse> getAllTest() {
-        List<TestRequest> tests = testRepository.findAll();
+        List<Tests> tests = testRepository.findAll();
         List<TestResponse> testList = new ArrayList<>();
 
-        for (TestRequest test : tests) {
+        for (Tests test : tests) {
             testList.add(test.toResponse());
         }
 
@@ -35,7 +35,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public TestResponse getTestById(Long id) {
-        TestRequest findTestId = testRepository.findById(id).orElse(null);
+        Tests findTestId = testRepository.findById(id).orElse(null);
         if (findTestId == null) {
 	        throw new TestIdNotExistException("Question not found");
 	    }
@@ -43,9 +43,9 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public TestResponse updateTest(TestRequest test) {
+    public TestResponse updateTest(Tests test) {
     		try {
-    			TestRequest existingQuestion = testRepository.findById(test.getTestId())
+    			Tests existingQuestion = testRepository.findById(test.getTestId())
     					.orElseThrow(() -> new TestIdNotExistException("Question not found"));
     			existingQuestion.setTitle(test.getTitle());
     			existingQuestion.setDescription(test.getDescription());
@@ -53,7 +53,7 @@ public class TestServiceImpl implements TestService {
     			existingQuestion.isActive();
     			existingQuestion.setNumberOfQuestions(test.getNumberOfQuestions());
     			
-    			TestRequest response = testRepository.save(existingQuestion);
+    			Tests response = testRepository.save(existingQuestion);
     			return convertToCategoryResponse(response);
     		} catch (Exception e) {
     			throw new TestIdNotExistException("Failed to update question"+e);
@@ -73,7 +73,7 @@ public class TestServiceImpl implements TestService {
  	    }
     }
     
-    private TestResponse convertToCategoryResponse(TestRequest test) {
+    private TestResponse convertToCategoryResponse(Tests test) {
     	TestResponse response = new TestResponse();
 		response.setTitle(test.getTitle());
 		response.setDescription(test.getDescription());
