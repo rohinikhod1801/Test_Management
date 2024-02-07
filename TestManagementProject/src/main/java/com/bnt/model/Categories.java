@@ -28,7 +28,7 @@ public class Categories {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<QuestionsRequest> questions;
+    private List<Questions> questions;
 
 	public Categories() {
 		super();
@@ -65,11 +65,11 @@ public class Categories {
 		this.description = description;
 	}
 
-	public List<QuestionsRequest> getQuestions() {
+	public List<Questions> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(List<QuestionsRequest> questions) {
+	public void setQuestions(List<Questions> questions) {
 		this.questions = questions;
 	}
 

@@ -27,7 +27,7 @@ public class TestRequest {
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "tests")
-	private List<QuestionsRequest> question;
+	private List<Questions> question;
 
 	public TestRequest() {
 		super();
@@ -93,11 +93,11 @@ public class TestRequest {
 		this.active = active;
 	}
 
-	public List<QuestionsRequest> getQuestions() {
+	public List<Questions> getQuestions() {
 		return question;
 	}
 
-	public void setQuestions(List<QuestionsRequest> question) {
+	public void setQuestions(List<Questions> question) {
 		this.question = question;
 	}
 

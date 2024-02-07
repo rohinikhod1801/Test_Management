@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-class QuestionsRequestTest {
+class QuestionsTest {
 
 	@Test
 	public void testQuestionsModel() {
@@ -16,7 +16,7 @@ class QuestionsRequestTest {
 		category.setTitle("Spring Core");
 		category.setDescription("This is Spring Core Category Created");
 
-		QuestionsRequest question = new QuestionsRequest();
+		Questions question = new Questions();
 		question.setContent("What is the largest mammal in the india");
 		question.setOption1("African Elephant");
 		question.setOption2("Blue Whale");
@@ -39,7 +39,7 @@ class QuestionsRequestTest {
 	@Test
 	public void testQuestionsModelWithNullContent() {
 		try {
-			QuestionsRequest question = new QuestionsRequest();
+			Questions question = new Questions();
 			question.setContent(null);
 			question.setOption1("Blue Whale");
 			fail("Expected IllegalArgumentException, but no exception was thrown");
@@ -51,7 +51,7 @@ class QuestionsRequestTest {
 	@Test
 	public void testQuestionsModelWithBlankOption1() {
 		try {
-			QuestionsRequest question = new QuestionsRequest();
+			Questions question = new Questions();
 			question.setContent("What is the largest mammal in the india");
 			question.setOption1("   "); // Blank option1
 			fail("Expected IllegalArgumentException, but no exception was thrown");
@@ -63,7 +63,7 @@ class QuestionsRequestTest {
 	@Test
 	public void testQuestionsModelWithNullCategory() {
 		try {
-			QuestionsRequest question = new QuestionsRequest();
+			Questions question = new Questions();
 			question.setContent("What is the largest mammal in the india");
 			question.setOption1("Blue Whale");
 			question.setCategory(null);

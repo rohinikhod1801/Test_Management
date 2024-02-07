@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "questions")
-public class QuestionsRequest {
+public class Questions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class QuestionsRequest {
 	@JoinTable(name = "question_test",joinColumns = @JoinColumn(name = "question_id"),inverseJoinColumns = @JoinColumn(name = "test_id"))   
 	private List<TestRequest> tests;
 
-	public QuestionsRequest() {
+	public Questions() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.Categories;
-import com.bnt.model.QuestionsRequest;
+import com.bnt.model.Questions;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
@@ -30,12 +30,12 @@ class QuestionManagementTest {
 	@InjectMocks
 	private QuestionManagement questions;
 
-	public QuestionsRequest setAddQuestionRequest() {
+	public Questions setAddQuestionRequest() {
 		Categories category = new Categories();
 		category.setCategoryId(2l);
 		category.setTitle("Spring boot");
 		category.setDescription("this is spring boot Category");
-		QuestionsRequest question = new QuestionsRequest();
+		Questions question = new Questions();
 		question.setQuestionId(1l);
 		question.setContent("what is java");
 		question.setOption1("depedent language");
@@ -51,7 +51,7 @@ class QuestionManagementTest {
 	@Test
 	public void testAddQuestionToCategory_Success() {
 		Long categoryId = 1L;
-		QuestionsRequest question = setAddQuestionRequest();
+		Questions question = setAddQuestionRequest();
 		ResponseEntity<String> expectedResponse = ResponseEntity.ok("Question added to category successfully");
 		ResponseEntity<String> actualResponse = questions.addQuestionToCategory(categoryId, question);
 		assertEquals(expectedResponse, actualResponse);
@@ -62,7 +62,7 @@ class QuestionManagementTest {
 	public void testAddQuestionToCategory_CategoryNotFound() {
 
 		Long categoryId = 1L;
-		QuestionsRequest question = new QuestionsRequest();
+		Questions question = new Questions();
 		questions.addQuestionToCategory(categoryId, question);
 	}
 
@@ -70,7 +70,7 @@ class QuestionManagementTest {
 	public void testAddQuestionToCategory_QuestionNotFound() {
 
 		Long categoryId = null;
-		QuestionsRequest question = setAddQuestionRequest();
+		Questions question = setAddQuestionRequest();
 		assertThrows(CategoryNotFoundException.class, () -> {
 			questions.addQuestionToCategory(categoryId, question);
 		});
@@ -116,7 +116,7 @@ class QuestionManagementTest {
 	@Test
 	public void testUpdateQuestion_Success() {
 
-		QuestionsRequest updatedQuestionRequest = new QuestionsRequest();
+		Questions updatedQuestionRequest = new Questions();
 		QuestionsResponse expectedResponse = new QuestionsResponse();
 		when(questionService.updateQuestion(updatedQuestionRequest)).thenReturn(expectedResponse);
 		ResponseEntity<QuestionsResponse> actualResponse = questions.updateQuestion(updatedQuestionRequest);

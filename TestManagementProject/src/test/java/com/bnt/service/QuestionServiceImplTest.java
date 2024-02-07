@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.Categories;
-import com.bnt.model.QuestionsRequest;
+import com.bnt.model.Questions;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.repository.CategoryRepository;
 import com.bnt.repository.QuestionRepository;
@@ -34,8 +34,8 @@ class QuestionServiceImplTest {
 	@InjectMocks
 	private QuestionServiceImpl questionService;
 
-	public QuestionsRequest setAddQuestionRequest() {
-		QuestionsRequest question = new QuestionsRequest();
+	public Questions setAddQuestionRequest() {
+		Questions question = new Questions();
 		question.setQuestionId(1l);
 		question.setContent("what is java");
 		question.setOption1("depedent language");
@@ -54,7 +54,7 @@ class QuestionServiceImplTest {
 		Long categoryId = 1L;
 		Categories category = new Categories();
 		category.setCategoryId(categoryId);
-		QuestionsRequest question = setAddQuestionRequest();
+		Questions question = setAddQuestionRequest();
 
 		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 		questionService.addQuestion(categoryId, question);
@@ -63,8 +63,8 @@ class QuestionServiceImplTest {
 
 	@Test
 	public void testGetAllQuestions() {
-		List<QuestionsRequest> questions = new ArrayList<>();
-		QuestionsRequest question = setAddQuestionRequest();
+		List<Questions> questions = new ArrayList<>();
+		Questions question = setAddQuestionRequest();
 		questions.add(question);
 
 		when(questionRepository.findAll()).thenReturn(questions);
@@ -75,7 +75,7 @@ class QuestionServiceImplTest {
 	@Test
 	public void testGetQuestionsById() {
 		Long questionId = 1l;
-		QuestionsRequest question = setAddQuestionRequest();
+		Questions question = setAddQuestionRequest();
 		question.setQuestionId(1l);
 		question.setContent("what is java");
 		question.setOption1("depedent language");
@@ -94,7 +94,7 @@ class QuestionServiceImplTest {
 		Long questionId = 1L;
 
 		// Creating a sample existing question
-		QuestionsRequest existingQuestion = new QuestionsRequest();
+		Questions existingQuestion = new Questions();
 		existingQuestion.setQuestionId(questionId);
 		existingQuestion.setContent("Existing Question");
 		existingQuestion.setOption1("Option1");
@@ -104,7 +104,7 @@ class QuestionServiceImplTest {
 		existingQuestion.setAnswer("Existing Answer");
 		existingQuestion.setMarks("100");
 
-		QuestionsRequest request = new QuestionsRequest();
+		Questions request = new Questions();
 		request.setQuestionId(questionId);
 		request.setContent("Updated Question");
 		request.setOption1("Updated Option1");

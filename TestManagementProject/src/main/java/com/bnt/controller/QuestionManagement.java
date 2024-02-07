@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.QuestionsRequest;
+import com.bnt.model.Questions;
 import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
@@ -38,7 +38,7 @@ public class QuestionManagement {
 	@PostMapping("/{category_id}")
 	public ResponseEntity<String> addQuestionToCategory(
 			@PathVariable("category_id") Long category_id,
-	        @RequestBody QuestionsRequest question) {
+	        @RequestBody Questions question) {
 	    
 	    try {
 	    	if (category_id == null) {
@@ -72,7 +72,7 @@ public class QuestionManagement {
 
 	 @PutMapping
 	 public ResponseEntity<QuestionsResponse> updateQuestion(
-	            @RequestBody QuestionsRequest updatedQuestionRequest) {
+	            @RequestBody Questions updatedQuestionRequest) {
 	        try {
 	        	QuestionsResponse updatedQuestion = service.updateQuestion(updatedQuestionRequest);
 	            return ResponseEntity.ok(updatedQuestion);
@@ -95,11 +95,11 @@ public class QuestionManagement {
 		}
 	 
 	 @PostMapping
-	 public ResponseEntity<List<QuestionsRequest>> importQuestions(@RequestParam("file") MultipartFile file) {
+	 public ResponseEntity<List<Questions>> importQuestions(@RequestParam("file") MultipartFile file) {
 	        try {
 	        	logger.info("Importing questions from Excel file");
 	            InputStream excelInputStream = file.getInputStream();
-	            List<QuestionsRequest> importedQuestions = service.importQuestionsFromExcel(excelInputStream);
+	            List<Questions> importedQuestions = service.importQuestionsFromExcel(excelInputStream);
 	            return ResponseEntity.ok(importedQuestions);
 	        } catch (IOException e) {
 	        	logger.error("Error importing questions from Excel file: {}", e.getMessage());
