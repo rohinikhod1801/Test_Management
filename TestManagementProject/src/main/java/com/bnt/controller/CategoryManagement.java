@@ -29,7 +29,7 @@ public class CategoryManagement {
 	@Autowired
 	private CategoryService service;
 
-	@PostMapping("/insert")
+	@PostMapping
 	public CategoryRequest addNewCategory(@RequestBody CategoryRequest category) {
 
 		CategoryRequest addcategory = service.addNewCategory(category);
