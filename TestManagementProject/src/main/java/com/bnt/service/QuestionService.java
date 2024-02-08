@@ -8,8 +8,6 @@ import com.bnt.model.Questions;
 import com.bnt.model.QuestionsResponse;
 
 public interface QuestionService {
-
-	public void addQuestion(Long questionId, Questions question);
 	
 	public List<QuestionsResponse> getAllQuestions();
 	

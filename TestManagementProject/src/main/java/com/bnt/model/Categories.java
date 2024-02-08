@@ -1,6 +1,5 @@
 package com.bnt.model;
 import java.util.List;
-import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,7 +31,6 @@ public class Categories {
 
 	public Categories() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getCategoryId() {
@@ -48,10 +46,10 @@ public class Categories {
 	}
 
 	public void setTitle(String title) {
-		if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or blank");
-        }
-		this.title = title;
+		if (title != null) {
+	        title = title.trim();
+	    }
+	    this.title = title;
 	}
 
 	public String getDescription() {

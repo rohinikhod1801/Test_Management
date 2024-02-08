@@ -44,6 +44,10 @@ class QuestionServiceImplTest {
 		question.setOption4("Independant easy to understand");
 		question.setAnswer("Independant easy to understand");
 		question.setMarks("100");
+		
+		Categories category = new Categories();
+		category.setTitle("Advance java Test");
+		question.setCategory(category);
 		return question;
 
 	}
@@ -51,14 +55,11 @@ class QuestionServiceImplTest {
 	@Test
 	public void testAddQuestion() {
 
-		Long categoryId = 1L;
-		Categories category = new Categories();
-		category.setCategoryId(categoryId);
 		Questions question = setAddQuestionRequest();
+		Categories category = question.getCategory();
+		when(categoryRepository.findByTitle(category.getTitle())).thenReturn(Optional.of(category));
 
-		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
-		questionService.addQuestion(categoryId, question);
-		verify(questionRepository, times(1)).save(question);
+		questionService.addQuestionByName(question);
 	}
 
 	@Test

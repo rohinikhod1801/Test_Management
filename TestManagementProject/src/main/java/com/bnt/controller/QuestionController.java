@@ -35,21 +35,18 @@ public class QuestionController {
 	@Autowired
 	QuestionService service;
 	
-	@PostMapping("/{category_id}")
-	public ResponseEntity<String> addQuestionToCategory(
-			@PathVariable("category_id") Long category_id,
-	        @RequestBody Questions question) {
-	    
-	    try {
-	    	if (category_id == null) {
-                throw new CategoryNotFoundException("Category ID is required");
-            }
-            service.addQuestion(category_id, question);
-            return ResponseEntity.ok("Question added to category successfully");
-        } catch (QuestionNotFoundException e) {
-        	throw new QuestionNotFoundException("Error occurred while adding new questions" + e);
-        } 
+	
+	@PostMapping("/insert")
+	public ResponseEntity<Questions> addQuestion(@RequestBody Questions question) {
+		try {
+			Questions addedQuestion = service.addQuestionByName(question);
+			return ResponseEntity.ok().body(addedQuestion);
+		} catch (QuestionNotFoundException e) {
+			throw new QuestionNotFoundException("Error occurred while adding new questions" + e);
+		}
 	}
+	
+	
 	
 	@GetMapping
 	public List<QuestionsResponse> getAllQuestions() {	

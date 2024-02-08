@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -34,43 +33,48 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public void addQuestion(Long categoryId, Questions question) {
-		Categories category = repository.findById(categoryId)
-				.orElseThrow(() -> new QuestionNotFoundException("Category not found"));
-		question.setCategory(category);
-		questionRepository.save(question);
-	}
-	
-	
-	@Override
 	public Questions addQuestionByName(Questions question) {
-		return question;
-		
+
+		Categories category = repository.findByTitle(question.getCategory().getTitle())
+				.orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
+		Categories categeries = new Categories();
+		categeries.setCategoryId(category.getCategoryId());
+
+		Questions questionRequest = new Questions();
+		questionRequest.setContent(question.getContent());
+		questionRequest.setOption1(question.getOption1());
+		questionRequest.setOption2(question.getOption2());
+		questionRequest.setOption3(question.getOption3());
+		questionRequest.setOption4(question.getOption4());
+		questionRequest.setAnswer(question.getAnswer());
+		questionRequest.setMarks(question.getMarks());
+		questionRequest.setCategory(categeries);
+		return questionRepository.save(questionRequest);
 	}
 
 	@Override
 	public List<QuestionsResponse> getAllQuestions() {
-	    List<Questions> questions = questionRepository.findAll();
-	    List<QuestionsResponse> questionsResponses = new ArrayList<>();
+		List<Questions> questions = questionRepository.findAll();
+		List<QuestionsResponse> questionsResponses = new ArrayList<>();
 
-	    for (Questions question : questions) {
-	        questionsResponses.add(question.toResponse());
-	    }
+		for (Questions question : questions) {
+			questionsResponses.add(question.toResponse());
+		}
 
-	    return questionsResponses;
+		return questionsResponses;
 	}
 
 	@Override
 	public QuestionsResponse getQuestionsById(Long questionId) {
-	    Questions question = questionRepository.findById(questionId).orElse(null);
+		Questions question = questionRepository.findById(questionId).orElse(null);
 
-	    if (question == null) {
-	        throw new QuestionNotFoundException("Question not found");
-	    }
+		if (question == null) {
+			throw new QuestionNotFoundException("Question not found");
+		}
 
-	    return convertToCategoryResponse(question);
+		return convertToCategoryResponse(question);
 	}
-
 
 	@Override
 	public QuestionsResponse updateQuestion(Questions request) {
@@ -89,17 +93,17 @@ public class QuestionServiceImpl implements QuestionService {
 			Questions response = questionRepository.save(existingQuestion);
 			return convertToCategoryResponse(response);
 		} catch (Exception e) {
-			throw new QuestionNotFoundException("Failed to update question"+e);
+			throw new QuestionNotFoundException("Failed to update question" + e);
 		}
 	}
 
 	@Override
 	public void deleteQuestion(Long questionId) {
-		 if (!questionRepository.existsById(questionId)) {
-	            throw new QuestionNotFoundException("Question not found with id: " + questionId);
-	        }
-	        questionRepository.deleteById(questionId);
-	    }
+		if (!questionRepository.existsById(questionId)) {
+			throw new QuestionNotFoundException("Question not found with id: " + questionId);
+		}
+		questionRepository.deleteById(questionId);
+	}
 
 	private QuestionsResponse convertToCategoryResponse(Questions questions) {
 		QuestionsResponse response = new QuestionsResponse();
@@ -113,7 +117,7 @@ public class QuestionServiceImpl implements QuestionService {
 		response.setMarks(questions.getMarks());
 		return response;
 	}
-	
+
 	@Override
 	public List<Questions> importQuestionsFromExcel(InputStream excelInputStream) throws IOException {
 		Workbook workbook = WorkbookFactory.create(excelInputStream);
@@ -143,5 +147,4 @@ public class QuestionServiceImpl implements QuestionService {
 		return cell.getStringCellValue();
 	}
 
-	
 }

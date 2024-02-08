@@ -31,7 +31,6 @@ public class Questions {
     private String answer;
     private String marks;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Categories category;
@@ -43,7 +42,6 @@ public class Questions {
 
 	public Questions() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getQuestionId() {

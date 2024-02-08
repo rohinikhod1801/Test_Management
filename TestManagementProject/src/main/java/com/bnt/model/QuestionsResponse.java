@@ -10,7 +10,8 @@ public class QuestionsResponse {
 	private String option4;
 	private String answer;
 	private String marks;
-
+	private long id;
+	
 	public QuestionsResponse() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -97,6 +98,15 @@ public class QuestionsResponse {
 	    }
 		this.marks = marks;
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 
 	@Override
 	public String toString() {
