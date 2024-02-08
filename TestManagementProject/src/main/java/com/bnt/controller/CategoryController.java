@@ -22,9 +22,9 @@ import com.bnt.service.CategoryService;
 
 @RestController
 @RequestMapping("/categories")
-public class CategoryManagement {
+public class CategoryController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CategoryManagement.class);
+	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
 	@Autowired
 	private CategoryService service;

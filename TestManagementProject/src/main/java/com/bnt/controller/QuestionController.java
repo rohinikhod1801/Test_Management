@@ -28,9 +28,9 @@ import com.bnt.service.QuestionService;
 
 @RestController
 @RequestMapping("/questions")
-public class QuestionManagement {
+public class QuestionController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(QuestionManagement.class);
+	private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
 	@Autowired
 	QuestionService service;

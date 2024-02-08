@@ -22,13 +22,13 @@ import com.bnt.model.CategoryResponse;
 import com.bnt.service.CategoryService;
 
 @SpringBootTest
-class CategoryManagementTest {
+class CategoryControllerTest {
 
 	@Mock
 	private CategoryService categoryService;
 
 	@InjectMocks
-	private CategoryManagement categories;
+	private CategoryController categories;
 
 	public Categories categoryData() {
 		Categories category = new Categories();

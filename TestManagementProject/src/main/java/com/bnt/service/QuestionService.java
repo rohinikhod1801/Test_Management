@@ -19,7 +19,9 @@ public interface QuestionService {
 
 	public void deleteQuestion(Long questionId);
 
-	List<Questions> importQuestionsFromExcel(InputStream excelInputStream) throws IOException;
+	List<Questions> importQuestionsFromExcel(InputStream excelInputStream) throws IOException;	
+	
+	public Questions addQuestionByName(Questions question);
 
 	
 }

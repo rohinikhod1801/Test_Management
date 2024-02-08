@@ -23,9 +23,9 @@ import com.bnt.service.TestServiceImpl;
 
 @RestController
 @RequestMapping("/tests")
-public class TestManagement {
+public class TestController {
 
-	private static final Logger logger = LoggerFactory.getLogger(TestManagement.class);
+	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
 	@Autowired
 	private TestServiceImpl testService;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -13,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 
+import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.Categories;
 import com.bnt.model.Questions;
@@ -37,6 +39,13 @@ public class QuestionServiceImpl implements QuestionService {
 				.orElseThrow(() -> new QuestionNotFoundException("Category not found"));
 		question.setCategory(category);
 		questionRepository.save(question);
+	}
+	
+	
+	@Override
+	public Questions addQuestionByName(Questions question) {
+		return question;
+		
 	}
 
 	@Override
@@ -134,4 +143,5 @@ public class QuestionServiceImpl implements QuestionService {
 		return cell.getStringCellValue();
 	}
 
+	
 }

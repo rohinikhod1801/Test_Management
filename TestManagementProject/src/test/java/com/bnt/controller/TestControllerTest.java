@@ -22,13 +22,13 @@ import com.bnt.model.TestResponse;
 import com.bnt.service.TestServiceImpl;
 
 @SpringBootTest
-class TestManagementTest {
+class TestControllerTest {
 
 	@Mock
 	private TestServiceImpl testService;
 
 	@InjectMocks
-	private TestManagement tests;
+	private TestController tests;
 	
 	public Tests addTestData() {
 		Tests test = new Tests();
