@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.Questions;
 import com.bnt.model.QuestionsResponse;
@@ -29,14 +28,13 @@ import com.bnt.service.QuestionService;
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
 	@Autowired
 	QuestionService service;
-	
-	
-	@PostMapping("/insert")
+
+	@PostMapping
 	public ResponseEntity<Questions> addQuestion(@RequestBody Questions question) {
 		try {
 			Questions addedQuestion = service.addQuestionByName(question);
@@ -45,16 +43,14 @@ public class QuestionController {
 			throw new QuestionNotFoundException("Error occurred while adding new questions" + e);
 		}
 	}
-	
-	
-	
+
 	@GetMapping
-	public List<QuestionsResponse> getAllQuestions() {	
-		List<QuestionsResponse> questions= service.getAllQuestions();
-		logger.info("Getting all Questions: {}",questions.toString());
+	public List<QuestionsResponse> getAllQuestions() {
+		List<QuestionsResponse> questions = service.getAllQuestions();
+		logger.info("Getting all Questions: {}", questions.toString());
 		return questions;
 	}
-	
+
 	@GetMapping("/{questionId}")
 	public ResponseEntity<QuestionsResponse> getQuestionById(@PathVariable("questionId") Long questionId) {
 		try {
@@ -67,41 +63,40 @@ public class QuestionController {
 		}
 	}
 
-	 @PutMapping
-	 public ResponseEntity<QuestionsResponse> updateQuestion(
-	            @RequestBody Questions updatedQuestionRequest) {
-	        try {
-	        	QuestionsResponse updatedQuestion = service.updateQuestion(updatedQuestionRequest);
-	            return ResponseEntity.ok(updatedQuestion);
-	        } catch (QuestionNotFoundException e) {	      
-	        	throw new QuestionNotFoundException("Error occurred while updating Questions" + e);
-	        }
-	    }
-	 
-	 @DeleteMapping("/{questionId}")
-		public ResponseEntity<Long> deleteCategory(@PathVariable("questionId") Long questionId) {
-			try {
-				logger.info("Deleting question with ID: {}", questionId);
-				service.deleteQuestion(questionId);
-				return ResponseEntity.ok(questionId);
-			} catch (QuestionNotFoundException ex) {
-				logger.error("question not found with ID: {}", questionId, ex);
-				throw new QuestionNotFoundException("Error occurred while deleting Questions" + ex);
-			}
-
+	@PutMapping
+	public ResponseEntity<QuestionsResponse> updateQuestion(@RequestBody Questions updatedQuestionRequest) {
+		try {
+			QuestionsResponse updatedQuestion = service.updateQuestion(updatedQuestionRequest);
+			return ResponseEntity.ok(updatedQuestion);
+		} catch (QuestionNotFoundException e) {
+			throw new QuestionNotFoundException("Error occurred while updating Questions" + e);
 		}
-	 
-	 @PostMapping
-	 public ResponseEntity<List<Questions>> importQuestions(@RequestParam("file") MultipartFile file) {
-	        try {
-	        	logger.info("Importing questions from Excel file");
-	            InputStream excelInputStream = file.getInputStream();
-	            List<Questions> importedQuestions = service.importQuestionsFromExcel(excelInputStream);
-	            return ResponseEntity.ok(importedQuestions);
-	        } catch (IOException e) {
-	        	logger.error("Error importing questions from Excel file: {}", e.getMessage());
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-	        }
-	    }
+	}
+
+	@DeleteMapping("/{questionId}")
+	public ResponseEntity<Long> deleteCategory(@PathVariable("questionId") Long questionId) {
+		try {
+			logger.info("Deleting question with ID: {}", questionId);
+			service.deleteQuestion(questionId);
+			return ResponseEntity.ok(questionId);
+		} catch (QuestionNotFoundException ex) {
+			logger.error("question not found with ID: {}", questionId, ex);
+			throw new QuestionNotFoundException("Error occurred while deleting Questions" + ex);
+		}
+
+	}
+
+	@PostMapping("/import")
+	public ResponseEntity<List<Questions>> importQuestions(@RequestParam("file") MultipartFile file) {
+		try {
+			logger.info("Importing questions from Excel file");
+			InputStream excelInputStream = file.getInputStream();
+			List<Questions> importedQuestions = service.importQuestionsFromExcel(excelInputStream);
+			return ResponseEntity.ok(importedQuestions);
+		} catch (IOException e) {
+			logger.error("Error importing questions from Excel file: {}", e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
 
 }
