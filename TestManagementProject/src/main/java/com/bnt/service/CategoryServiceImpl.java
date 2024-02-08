@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.bnt.exception.CategoryNotFoundException;
+import com.bnt.exception.DuplicateCategoryException;
 import com.bnt.model.Categories;
 import com.bnt.model.CategoryResponse;
 import com.bnt.repository.CategoryRepository;
@@ -21,6 +22,10 @@ public class CategoryServiceImpl implements CategoryService {
 		
 	@Override
 	public Categories addNewCategory(Categories category) {
+		
+		if (repository.findByTitle(category.getTitle()).isPresent()) {
+	        throw new DuplicateCategoryException("Category with title '" + category.getTitle() + "' already exists");
+	    }	
 		Categories newCategory = new Categories();
         newCategory.setTitle(category.getTitle());
         newCategory.setDescription(category.getDescription());
