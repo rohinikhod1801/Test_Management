@@ -87,16 +87,16 @@ public class QuestionController {
 	}
 
 	@PostMapping("/import")
-	public ResponseEntity<List<Questions>> importQuestions(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<String> importExcelToDatabase(@RequestParam("file") List<MultipartFile> files)
+			throws IOException {
+
 		try {
 			logger.info("Importing questions from Excel file");
-			InputStream excelInputStream = file.getInputStream();
-			List<Questions> importedQuestions = service.importQuestionsFromExcel(excelInputStream);
-			return ResponseEntity.ok(importedQuestions);
+			service.importQuestionsFromExcel(files);
+			return ResponseEntity.ok("Added Successfully Questions Data");
 		} catch (IOException e) {
 			logger.error("Error importing questions from Excel file: {}", e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
-
 }

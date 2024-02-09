@@ -33,6 +33,11 @@ public class Categories {
 		super();
 	}
 
+	public Categories(String title) {
+		super();
+		this.title = title;
+	}
+
 	public Long getCategoryId() {
 		return categoryId;
 	}

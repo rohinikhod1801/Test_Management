@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -11,7 +12,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
@@ -24,18 +30,18 @@ import com.bnt.repository.QuestionRepository;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-	private final CategoryRepository repository;
+	private final CategoryRepository categoryRepository;
 	private final QuestionRepository questionRepository;
 
-	public QuestionServiceImpl(CategoryRepository repository, QuestionRepository questionRepository) {
-		this.repository = repository;
+	public QuestionServiceImpl(CategoryRepository categoryRepository, QuestionRepository questionRepository) {
+		this.categoryRepository = categoryRepository;
 		this.questionRepository = questionRepository;
 	}
 
 	@Override
 	public Questions addQuestionByName(Questions question) {
 
-		Categories category = repository.findByTitle(question.getCategory().getTitle())
+		Categories category = categoryRepository.findByTitle(question.getCategory().getTitle())
 				.orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
 		Categories categeries = new Categories();
@@ -119,32 +125,88 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public List<Questions> importQuestionsFromExcel(InputStream excelInputStream) throws IOException {
-		Workbook workbook = WorkbookFactory.create(excelInputStream);
-		List<Questions> importedQuestions = new ArrayList<>();
+	public void importQuestionsFromExcel(List<MultipartFile> multipartfiles) throws IOException {
+		if (!multipartfiles.isEmpty()) {
+			List<Questions> transactions = new ArrayList<>();
+			multipartfiles.forEach(multipartfile -> {
+				try {
+					XSSFWorkbook workBook = new XSSFWorkbook(multipartfile.getInputStream());
 
-		Sheet sheet = workbook.getSheetAt(0);
-		for (Row row : sheet) {
-			Questions question = new Questions();
-			question.setContent(getCellValue(row.getCell(0)));
-			question.setOption1(getCellValue(row.getCell(1)));
-			question.setOption2(getCellValue(row.getCell(2)));
-			question.setOption3(getCellValue(row.getCell(3)));
-			question.setOption4(getCellValue(row.getCell(4)));
-			question.setAnswer(getCellValue(row.getCell(5)));
-			question.setMarks(getCellValue(row.getCell(6)));
+					XSSFSheet sheet = workBook.getSheetAt(0);
+					for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0); rowIndex++) {
+						XSSFRow row = sheet.getRow(rowIndex);
+						if (rowIndex == 0) {
+							continue;
+						}
 
-			importedQuestions.add(questionRepository.save(question));
+						String content = String.valueOf(row.getCell(0));
+						String option1 = String.valueOf(row.getCell(1));
+						String option2 = String.valueOf(row.getCell(2));
+						String option3 = String.valueOf(row.getCell(3));
+						String option4 = String.valueOf(row.getCell(4));
+						String answer = String.valueOf(row.getCell(5));
+						String mark = String.valueOf(row.getCell(6));
+						String title = String.valueOf(row.getCell(7));
+
+						Categories category = categoryRepository.findByTitle(title)
+								.orElseGet(() -> categoryRepository.save(new Categories(title)));
+
+						Questions questionRequest = new Questions();
+						questionRequest.setContent(content);
+						questionRequest.setOption1(option1);
+						questionRequest.setOption2(option2);
+						questionRequest.setOption3(option3);
+						questionRequest.setOption4(option4);
+						questionRequest.setAnswer(answer);
+						questionRequest.setMarks(mark);
+						questionRequest.setCategory(category);
+						transactions.add(questionRequest);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+
+			if (!transactions.isEmpty()) {
+				questionRepository.saveAll(transactions);
+			}
 		}
-		return importedQuestions;
 	}
 
-	private String getCellValue(Cell cell) {
-		if (cell == null) {
+	private Object getValue(Cell cell) {
+		switch (cell.getCellType()) {
+		case STRING:
+			return cell.getStringCellValue();
+		case NUMERIC:
+			return String.valueOf((int) cell.getNumericCellValue());
+		case BOOLEAN:
+			return cell.getBooleanCellValue();
+		case ERROR:
+			return cell.getErrorCellValue();
+		case FORMULA:
+			return cell.getCellFormula();
+		case BLANK:
 			return null;
+		case _NONE:
+			return null;
+		default:
+			break;
 		}
-		cell.setCellType(CellType.STRING);
-		return cell.getStringCellValue();
+		return null;
+	}
+
+	public static int getNumberOfNonEmptyCells(XSSFSheet sheet, int columnIndex) {
+		int numOfNonEmptyCells = 0;
+		for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+			XSSFRow row = sheet.getRow(i);
+			if (row != null) {
+				XSSFCell cell = row.getCell(columnIndex);
+				if (cell != null && cell.getCellType() != CellType.BLANK) {
+					numOfNonEmptyCells++;
+				}
+			}
+		}
+		return numOfNonEmptyCells;
 	}
 
 }
