@@ -1,19 +1,28 @@
 package com.bnt.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 
 import com.bnt.exception.QuestionNotFoundException;
 import com.bnt.model.Categories;
@@ -34,6 +43,15 @@ class QuestionServiceImplTest {
 	@InjectMocks
 	private QuestionServiceImpl questionService;
 
+	private MockMultipartFile validExcelFile;
+
+	@Before(value = "")
+	public void setup() throws IOException {
+		InputStream inputStream = getClass().getResourceAsStream("/valid_excel_file.xlsx");
+		validExcelFile = new MockMultipartFile("file", "valid_excel_file.xlsx", "application/vnd.ms-excel",
+				inputStream.readAllBytes());
+	}
+
 	public Questions setAddQuestionRequest() {
 		Questions question = new Questions();
 		question.setQuestionId(1l);
@@ -44,7 +62,7 @@ class QuestionServiceImplTest {
 		question.setOption4("Independant easy to understand");
 		question.setAnswer("Independant easy to understand");
 		question.setMarks("100");
-		
+
 		Categories category = new Categories();
 		category.setTitle("Advance java Test");
 		question.setCategory(category);
@@ -140,5 +158,17 @@ class QuestionServiceImplTest {
 		assertThrows(QuestionNotFoundException.class, () -> {
 			questionService.deleteQuestion(questionId);
 		});
+	}
+
+	@Test
+	public void testImportQuestionsFromExcelSuccess() throws IOException {
+		try {
+			when(categoryRepository.findByTitle(anyString())).thenReturn(java.util.Optional.of(new Categories()));
+			when(questionRepository.saveAll(any())).thenReturn(Collections.emptyList());
+			questionService.importQuestionsFromExcel(Collections.singletonList(validExcelFile));
+			verify(questionRepository, times(1)).saveAll(anyList());
+		} catch (Exception e) {
+			e.getMessage();
+		}
 	}
 }

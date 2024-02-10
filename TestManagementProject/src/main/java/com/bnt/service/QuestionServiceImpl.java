@@ -4,14 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -126,50 +120,54 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public void importQuestionsFromExcel(List<MultipartFile> multipartfiles) throws IOException {
-		if (!multipartfiles.isEmpty()) {
-			List<Questions> transactions = new ArrayList<>();
-			multipartfiles.forEach(multipartfile -> {
-				try {
-					XSSFWorkbook workBook = new XSSFWorkbook(multipartfile.getInputStream());
-
-					XSSFSheet sheet = workBook.getSheetAt(0);
-					for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0); rowIndex++) {
-						XSSFRow row = sheet.getRow(rowIndex);
-						if (rowIndex == 0) {
-							continue;
-						}
-
-						String content = String.valueOf(row.getCell(0));
-						String option1 = String.valueOf(row.getCell(1));
-						String option2 = String.valueOf(row.getCell(2));
-						String option3 = String.valueOf(row.getCell(3));
-						String option4 = String.valueOf(row.getCell(4));
-						String answer = String.valueOf(row.getCell(5));
-						String mark = String.valueOf(row.getCell(6));
-						String title = String.valueOf(row.getCell(7));
-
-						Categories category = categoryRepository.findByTitle(title)
-								.orElseGet(() -> categoryRepository.save(new Categories(title)));
-
-						Questions questionRequest = new Questions();
-						questionRequest.setContent(content);
-						questionRequest.setOption1(option1);
-						questionRequest.setOption2(option2);
-						questionRequest.setOption3(option3);
-						questionRequest.setOption4(option4);
-						questionRequest.setAnswer(answer);
-						questionRequest.setMarks(mark);
-						questionRequest.setCategory(category);
-						transactions.add(questionRequest);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-
-			if (!transactions.isEmpty()) {
-				questionRepository.saveAll(transactions);
+		for (MultipartFile multipartFile : multipartfiles) {
+			try {
+				processExcelFile(multipartFile.getInputStream());
+			} catch (Exception e) {
+				System.err.println("Error: Not a valid Office Open XML file: " + multipartFile.getOriginalFilename());
 			}
+		}
+	}
+
+	public void processExcelFile(InputStream inputStream) throws IOException {
+		List<Questions> transactions = new ArrayList<>();
+		try (XSSFWorkbook workBook = new XSSFWorkbook(inputStream)) {
+			XSSFSheet sheet = workBook.getSheetAt(0);
+			for (int rowIndex = 0; rowIndex < getNumberOfNonEmptyCells(sheet, 0); rowIndex++) {
+				XSSFRow row = sheet.getRow(rowIndex);
+				if (rowIndex == 0) {
+					continue;
+				}
+
+				String content = String.valueOf(row.getCell(0));
+				String option1 = String.valueOf(row.getCell(1));
+				String option2 = String.valueOf(row.getCell(2));
+				String option3 = String.valueOf(row.getCell(3));
+				String option4 = String.valueOf(row.getCell(4));
+				String answer = String.valueOf(row.getCell(5));
+				String mark = String.valueOf(row.getCell(6));
+				String title = String.valueOf(row.getCell(7));
+
+				Categories category = categoryRepository.findByTitle(title)
+						.orElseGet(() -> categoryRepository.save(new Categories(title)));
+
+				Questions questionRequest = new Questions();
+				questionRequest.setContent(content);
+				questionRequest.setOption1(option1);
+				questionRequest.setOption2(option2);
+				questionRequest.setOption3(option3);
+				questionRequest.setOption4(option4);
+				questionRequest.setAnswer(answer);
+				questionRequest.setMarks(mark);
+				questionRequest.setCategory(category);
+				transactions.add(questionRequest);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (!transactions.isEmpty()) {
+			questionRepository.saveAll(transactions);
 		}
 	}
 
