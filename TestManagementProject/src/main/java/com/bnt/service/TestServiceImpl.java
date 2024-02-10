@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bnt.entity.TestResponse;
+import com.bnt.entity.Tests;
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.Tests;
-import com.bnt.model.TestResponse;
 import com.bnt.repository.TestRepository;
 
 @Service

@@ -14,9 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.CategoryResponse;
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.Categories;
-import com.bnt.model.CategoryResponse;
 import com.bnt.repository.CategoryRepository;
 
 @SpringBootTest

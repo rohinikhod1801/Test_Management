@@ -16,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.bnt.entity.TestResponse;
+import com.bnt.entity.Tests;
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.Tests;
-import com.bnt.model.TestResponse;
 import com.bnt.repository.TestRepository;
 
 @SpringBootTest

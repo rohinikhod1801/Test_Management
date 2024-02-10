@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bnt.entity.TestResponse;
+import com.bnt.entity.Tests;
 import com.bnt.exception.TestIdNotExistException;
-import com.bnt.model.Tests;
-import com.bnt.model.TestResponse;
 import com.bnt.service.TestServiceImpl;
 
 @RestController

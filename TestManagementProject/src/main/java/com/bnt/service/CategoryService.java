@@ -2,8 +2,8 @@ package com.bnt.service;
 
 import java.util.List;
 
-import com.bnt.model.Categories;
-import com.bnt.model.CategoryResponse;
+import com.bnt.entity.Categories;
+import com.bnt.entity.CategoryResponse;
 
 public interface CategoryService {
 	

@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bnt.entity.Questions;
+import com.bnt.entity.QuestionsResponse;
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.Questions;
-import com.bnt.model.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
 @RestController

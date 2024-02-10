@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
+import com.bnt.entity.Categories;
+
 class CategoriesTest {
 
 	//This is Positive Test Case

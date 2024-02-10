@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.Questions;
+
 class QuestionsTest {
 
 	@Test

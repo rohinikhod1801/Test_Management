@@ -24,10 +24,10 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.Questions;
+import com.bnt.entity.QuestionsResponse;
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.Categories;
-import com.bnt.model.Questions;
-import com.bnt.model.QuestionsResponse;
 import com.bnt.repository.CategoryRepository;
 import com.bnt.repository.QuestionRepository;
 

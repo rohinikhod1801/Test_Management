@@ -16,9 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.CategoryResponse;
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.Categories;
-import com.bnt.model.CategoryResponse;
 import com.bnt.service.CategoryService;
 
 @SpringBootTest

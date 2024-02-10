@@ -18,9 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bnt.model.Categories;
-import com.bnt.model.Questions;
-import com.bnt.model.QuestionsResponse;
+import com.bnt.entity.Categories;
+import com.bnt.entity.Questions;
+import com.bnt.entity.QuestionsResponse;
 import com.bnt.service.QuestionService;
 
 class QuestionControllerTest {

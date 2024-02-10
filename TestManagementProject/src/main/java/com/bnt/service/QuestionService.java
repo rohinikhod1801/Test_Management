@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bnt.model.Questions;
-import com.bnt.model.QuestionsResponse;
+import com.bnt.entity.Questions;
+import com.bnt.entity.QuestionsResponse;
 
 public interface QuestionService {
 	

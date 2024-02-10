@@ -1,4 +1,4 @@
-package com.bnt.model;
+package com.bnt.entity;
 
 public class QuestionsResponse {
 

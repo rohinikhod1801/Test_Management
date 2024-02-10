@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.CategoryResponse;
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.DuplicateCategoryException;
-import com.bnt.model.Categories;
-import com.bnt.model.CategoryResponse;
 import com.bnt.repository.CategoryRepository;
 
 @Service

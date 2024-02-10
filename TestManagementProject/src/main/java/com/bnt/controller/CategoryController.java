@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.CategoryResponse;
 import com.bnt.exception.CategoryNotFoundException;
-import com.bnt.model.Categories;
-import com.bnt.model.CategoryResponse;
 import com.bnt.service.CategoryService;
 
 @RestController

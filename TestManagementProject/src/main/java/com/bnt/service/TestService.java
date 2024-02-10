@@ -2,8 +2,8 @@ package com.bnt.service;
 
 import java.util.List;
 
-import com.bnt.model.Tests;
-import com.bnt.model.TestResponse;
+import com.bnt.entity.TestResponse;
+import com.bnt.entity.Tests;
 
 public interface TestService {
 	

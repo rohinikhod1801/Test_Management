@@ -13,11 +13,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bnt.entity.Categories;
+import com.bnt.entity.Questions;
+import com.bnt.entity.QuestionsResponse;
 import com.bnt.exception.CategoryNotFoundException;
 import com.bnt.exception.QuestionNotFoundException;
-import com.bnt.model.Categories;
-import com.bnt.model.Questions;
-import com.bnt.model.QuestionsResponse;
 import com.bnt.repository.CategoryRepository;
 import com.bnt.repository.QuestionRepository;
 
