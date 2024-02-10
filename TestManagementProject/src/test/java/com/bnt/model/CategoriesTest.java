@@ -22,11 +22,11 @@ class CategoriesTest {
 	
 	//This is Negative Test Cases
 	@Test
-	public void testCategoryModelWithNullTitle() {
+	public void testCategoryModelWithNullDescription() {
 	    try {
 	        Categories category = new Categories();
-	        category.setTitle(null);
-	        category.setDescription("Test Description");
+	        category.setTitle("Spring Core");
+	        category.setDescription(null);
 	        
 	    } catch (IllegalArgumentException e) {
 	        return;

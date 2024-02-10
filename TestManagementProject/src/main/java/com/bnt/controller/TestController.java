@@ -70,7 +70,7 @@ public class TestController {
 		try {
 			this.testService.deleteTest(testId);
 			logger.info("Getting Test by ID: {}", testId);
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok("Successfully deleted Test : "+testId);
 		} catch (TestIdNotExistException ex) {
 			logger.error("Test not found with ID: {}", testId, ex);
 			throw new TestIdNotExistException("Error occurred while Deleting Test" + ex);
