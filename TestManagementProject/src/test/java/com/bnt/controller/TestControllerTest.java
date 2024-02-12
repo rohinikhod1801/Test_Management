@@ -1,8 +1,9 @@
 package com.bnt.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -99,18 +100,23 @@ class TestControllerTest {
 	}
 
 	@Test
-	public void testDeleteTest_Exists() {
-		Long testId = 1L;
-		ResponseEntity<String> responseEntity = tests.deleteTest(testId);
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertNull(responseEntity.getBody());
-	}
+    void deleteTest_Success() {
+      
+        Long testId = 1L;
+        doNothing().when(testService).deleteTest(testId);
+        ResponseEntity<String> responseEntity = tests.deleteTest(testId);
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Successfully deleted Test : " + testId, responseEntity.getBody());
+    }
 
-	@Test
-	public void testDeleteTest_NotExists() {	
-		Long testId = 1L;
-	    doThrow(new TestIdNotExistException("Test not found")).when(testService).deleteTest(testId);
-	    assertThrows(TestIdNotExistException.class, () -> tests.deleteTest(testId));
-	}
-
+    @Test
+    void deleteTest_TestIdNotExistException() {
+        Long testId = 1L;
+        doThrow(new TestIdNotExistException("Test not found with ID: " + testId)).when(testService).deleteTest(testId);
+        assertThrows(TestIdNotExistException.class, () -> {
+        	tests.deleteTest(testId);
+        });
+    }
+	
 }
